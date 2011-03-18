@@ -353,11 +353,11 @@ OrderedTask::check_transition_point(OrderedTaskPoint& point,
     transition_enter = true;
     task_events.transition_enter(point);
   }
-  
-  if (nearby && point.transition_exit(state, state_last, task_projection)) {
+  if (nearby && point.check_transition_exit(state, state_last)) {
+    point.transition_exit(state, state_last, task_projection);
     transition_exit = true;
     task_events.transition_exit(point);
-    
+
     // detect restart
     if (is_start && last_started)
       last_started = false;

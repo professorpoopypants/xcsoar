@@ -101,15 +101,15 @@ public:
                         const AIRCRAFT_STATE &ref_last);
 
 /** 
- * Test whether aircraft has exited observation zone and
- * was previously inside; records this transition.
+ * Assumes test has been confirmed that aircraft has exited observation zone
+ * and was previously inside;
+ * Records this transition.
  * 
  * @param ref_now State current
  * @param ref_last State at last sample
  * 
- * @return True if observation zone is exited now
  */
-  bool transition_exit(const AIRCRAFT_STATE &ref_now,
+  void transition_exit(const AIRCRAFT_STATE &ref_now,
                        const AIRCRAFT_STATE &ref_last,
                        const TaskProjection &projection);
 

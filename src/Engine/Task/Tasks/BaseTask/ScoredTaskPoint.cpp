@@ -44,22 +44,18 @@ ScoredTaskPoint::transition_enter(const AIRCRAFT_STATE & ref_now,
   return entered;
 }
 
-bool 
+void
 ScoredTaskPoint::transition_exit(const AIRCRAFT_STATE & ref_now, 
                                  const AIRCRAFT_STATE &ref_last,
                                  const TaskProjection &projection)
 {
-  bool exited = check_transition_exit(ref_now, ref_last);
-  if (exited) {
-    if (score_last_exit()) {
-      clear_sample_all_but_last(ref_last, projection);
-      m_state_entered = ref_last;
-      m_state_exited = ref_now;
-     } else {
-      m_state_exited = ref_last;
-    }
+  if (score_last_exit()) {
+    clear_sample_all_but_last(ref_last, projection);
+    m_state_entered = ref_last;
+    m_state_exited = ref_now;
+  } else {
+    m_state_exited = ref_last;
   }
-  return exited;
 }
 
 
