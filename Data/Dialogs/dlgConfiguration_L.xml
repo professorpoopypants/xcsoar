@@ -334,12 +334,12 @@
         <DataField DataType="enum" />
       </Edit>
 
-      <Edit Name="prpRoutePlannerAllowClimb" Caption="Route climb" X="2" Width="-2" Height="22" CaptionWidth="150"
+      <Edit Name="prpRoutePlannerAllowClimb" Caption="Route climb" Expert="1" X="2" Width="-2" Height="22" CaptionWidth="150"
         Help="When enabled and Mc is positive, route planning allows climbs between the aircraft location and destination.">
         <DataField DataType="boolean"/>
       </Edit>
 
-      <Edit Name="prpRoutePlannerUseCeiling" Caption="Route ceiling" X="2" Width="-2" Height="22" CaptionWidth="150"
+      <Edit Name="prpRoutePlannerUseCeiling" Caption="Route ceiling" Expert="1" X="2" Width="-2" Height="22" CaptionWidth="150"
         Help="When enabled, route planning climbs are limited to ceiling defined by greater of current aircraft altitude plus 500 m and the thermal ceiling.  If disabled, climbs are unlimited.">
         <DataField DataType="boolean"/>
       </Edit>
@@ -349,12 +349,12 @@
        <DataField DataType="enum" />
      </Edit>
 
-      <Edit Name="prpReachPolarMode" Caption="Reach polar" X="2" Width="-2" Height="22" CaptionWidth="150"
+      <Edit Name="prpReachPolarMode" Caption="Reach polar" Expert="1" X="2" Width="-2" Height="22" CaptionWidth="150"
        Help="This determines the glide performance used in reach, landable arrival, abort and alternate calculations:&#10;[Task] Uses task glide polar&#10;[Safety MC] Uses safety MacCready value">
        <DataField DataType="enum" />
      </Edit>
 
-      <Edit Name="prpTurningReach" Caption="Turning reach" X="2" Width="-2" Height="22" CaptionWidth="150"
+      <Edit Name="prpTurningReach" Caption="Turning reach" Expert="1" X="2" Width="-2" Height="22" CaptionWidth="150"
         Help="When enabled, the glide terrain range is calculated with turning around terrain obstacles.  If disabled, the range is from straight line paths from the glider.">
         <DataField DataType="boolean"/>
       </Edit>
