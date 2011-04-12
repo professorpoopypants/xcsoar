@@ -75,8 +75,8 @@
         <DataField DataType="boolean"/>
       </Edit>
 
-      <Edit Name="prpMapShiftBias" Caption="Map shift reference" Expert="1" X="2" Width="-2" Height="22" CaptionWidth="150"
-        Help="Determines what is used to shift the glider from the map center:&#10;[None] Disable adjustments.&#10;[Track] Use a recent average of the ground track as basis.&#10;[Target]Use the current target waypoint as basis">
+      <Edit Name="prpMapShiftBias" Caption="North up glider position" Expert="1" X="2" Width="-2" Height="22" CaptionWidth="150"
+        Help="When the map orientation is in North Up, this shifts the glider from the map center:&#10;[Center] Show glider in center of map.&#10;[Track] Shift the glider so the map shows more in the direction of the current average track.&#10;[Target]Shift the glider so the map shows more in the direction of the next target waypoint">
         <DataField DataType="enum" />
       </Edit>
 

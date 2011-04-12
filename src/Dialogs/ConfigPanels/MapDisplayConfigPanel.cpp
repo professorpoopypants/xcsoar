@@ -75,9 +75,9 @@ MapDisplayConfigPanel::Init(WndForm *_wf)
     DataFieldEnum* dfe;
     dfe = (DataFieldEnum*)wp->GetDataField();
     dfe->EnableItemHelp(true);
-    dfe->addEnumText(_("None"), MAP_SHIFT_BIAS_NONE, _("Disable adjustments."));
-    dfe->addEnumText(_("Track"), MAP_SHIFT_BIAS_TRACK, _("Use a recent average of the ground track as basis."));
-    dfe->addEnumText(_("Target"), MAP_SHIFT_BIAS_TARGET, _("Use the current target waypoint as basis."));
+    dfe->addEnumText(_("Center"), MAP_SHIFT_BIAS_NONE, _("In North up mode, show glider in center of map."));
+    dfe->addEnumText(_("Track"), MAP_SHIFT_BIAS_TRACK, _("In North up mode, shift the glider so the map shows more in the direction of the current average track."));
+    dfe->addEnumText(_("Target"), MAP_SHIFT_BIAS_TARGET, _("In North up mode, shift the glider so the map shows more in the direction of the next target waypoint."));
     dfe->Set(XCSoarInterface::SettingsMap().MapShiftBias);
     wp->RefreshDisplay();
   }
