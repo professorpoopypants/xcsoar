@@ -22,6 +22,7 @@ Copyright_License {
 */
 
 #include "Device/Driver.hpp"
+#include "Device/DumpPort.hpp"
 #include "Device/Register.hpp"
 #include "Device/Parser.hpp"
 #include "Device/device.hpp"
@@ -97,7 +98,9 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  Device *device = driver->CreateOnPort(port);
+  DumpPort *dump_port = new DumpPort(*port);
+
+  Device *device = driver->CreateOnPort(dump_port);
   assert(device != NULL);
 
   ConsoleOperationEnvironment env;
@@ -138,5 +141,6 @@ int main(int argc, char **argv)
   printf("Flight downloaded successfully\n");
 
   delete device;
+  delete dump_port;
   delete port;
 }

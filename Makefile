@@ -536,6 +536,8 @@ ifeq ($(HAVE_POSIX),n)
 $(call SRC_TO_OBJ,$(SRC)/Device/TCPPort.cpp): CXXFLAGS += -Wno-sign-compare
 endif
 
+XCSOAR_SOURCES += \
+	$(SRC)/Device/DumpPort.cpp
 ifeq ($(HAVE_POSIX),y)
 XCSOAR_SOURCES += \
 	$(SRC)/Device/TTYPort.cpp

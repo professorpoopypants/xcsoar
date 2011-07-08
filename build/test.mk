@@ -1142,6 +1142,7 @@ $(TARGET_BIN_DIR)/RunDeviceDriver$(TARGET_EXEEXT): $(RUN_DEVICE_DRIVER_OBJS) $(R
 RUN_DECLARE_SOURCES = \
 	$(SRC)/Units/Units.cpp \
 	$(SRC)/Device/Port.cpp \
+	$(SRC)/Device/DumpPort.cpp \
 	$(SRC)/Device/Driver.cpp \
 	$(SRC)/Device/Register.cpp \
 	$(SRC)/Device/Internal.cpp \
@@ -1161,6 +1162,7 @@ RUN_DECLARE_SOURCES = \
 	$(TEST_SRC_DIR)/FakeMessage.cpp \
 	$(TEST_SRC_DIR)/FakeProfile.cpp \
 	$(TEST_SRC_DIR)/FakeDialogs.cpp \
+	$(TEST_SRC_DIR)/FakeLogFile.cpp \
 	$(TEST_SRC_DIR)/RunDeclare.cpp
 ifeq ($(HAVE_POSIX),y)
 RUN_DECLARE_SOURCES += \
@@ -1188,6 +1190,7 @@ $(TARGET_BIN_DIR)/RunDeclare$(TARGET_EXEEXT): $(RUN_DECLARE_OBJS) $(RUN_DECLARE_
 RUN_FLIGHT_LIST_SOURCES = \
 	$(SRC)/Units/Units.cpp \
 	$(SRC)/Device/Port.cpp \
+	$(SRC)/Device/DumpPort.cpp \
 	$(SRC)/Device/Driver.cpp \
 	$(SRC)/Device/Register.cpp \
 	$(SRC)/Device/Internal.cpp \
@@ -1202,6 +1205,7 @@ RUN_FLIGHT_LIST_SOURCES = \
 	$(SRC)/Compatibility/string.c \
 	$(SRC)/Operation.cpp \
 	$(TEST_SRC_DIR)/ConsoleOperationEnvironment.cpp \
+	$(TEST_SRC_DIR)/FakeLogFile.cpp \
 	$(TEST_SRC_DIR)/FakeLanguage.cpp \
 	$(TEST_SRC_DIR)/FakeMessage.cpp \
 	$(TEST_SRC_DIR)/FakeProfile.cpp \
@@ -1237,6 +1241,7 @@ RUN_DOWNLOAD_FLIGHT_SOURCES = \
 	$(SRC)/Device/Register.cpp \
 	$(SRC)/Device/Internal.cpp \
 	$(SRC)/Device/Declaration.cpp \
+	$(SRC)/Device/DumpPort.cpp \
 	$(SRC)/NMEA/InputLine.cpp \
 	$(SRC)/NMEA/Checksum.cpp \
 	$(SRC)/NMEA/ExternalSettings.cpp \
@@ -1251,6 +1256,7 @@ RUN_DOWNLOAD_FLIGHT_SOURCES = \
 	$(TEST_SRC_DIR)/FakeMessage.cpp \
 	$(TEST_SRC_DIR)/FakeProfile.cpp \
 	$(TEST_SRC_DIR)/FakeDialogs.cpp \
+	$(TEST_SRC_DIR)/FakeLogFile.cpp \
 	$(TEST_SRC_DIR)/RunDownloadFlight.cpp
 ifeq ($(HAVE_POSIX),y)
 RUN_DOWNLOAD_FLIGHT_SOURCES += \

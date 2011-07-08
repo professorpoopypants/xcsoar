@@ -24,6 +24,7 @@ Copyright_License {
 #include "Device/Driver.hpp"
 #include "Device/Register.hpp"
 #include "Device/Parser.hpp"
+#include "Device/DumpPort.hpp"
 #include "Device/device.hpp"
 #include "Engine/Navigation/GeoPoint.hpp"
 #include "Engine/Waypoint/Waypoints.hpp"
@@ -96,7 +97,9 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  Device *device = driver->CreateOnPort(port);
+  DumpPort *dump_port = new DumpPort(*port);
+
+  Device *device = driver->CreateOnPort(dump_port);
   assert(device != NULL);
 
   ConsoleOperationEnvironment env;
@@ -114,6 +117,7 @@ int main(int argc, char **argv)
   }
 
   delete device;
+  delete dump_port;
   delete port;
 
   for (RecordedFlightList::const_iterator i = flight_list.begin();

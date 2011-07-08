@@ -30,6 +30,7 @@ Copyright_License {
 #include "InputEvents.hpp"
 #include "OS/PathName.hpp"
 #include "ConsoleOperationEnvironment.hpp"
+#include "Device/DumpPort.hpp"
 
 #ifdef HAVE_POSIX
 #include "Device/TTYPort.hpp"
@@ -119,7 +120,9 @@ int main(int argc, char **argv)
     return EXIT_FAILURE;
   }
 
-  Device *device = driver->CreateOnPort(port);
+  DumpPort port2(*port);
+
+  Device *device = driver->CreateOnPort(&port2);
   assert(device != NULL);
 
   ConsoleOperationEnvironment env;

@@ -25,6 +25,7 @@ Copyright_License {
 #include "Device/Driver.hpp"
 #include "Device/Parser.hpp"
 #include "Device/FLARM.hpp"
+#include "Device/DumpPort.hpp"
 #include "DeviceBlackboard.hpp"
 #include "NMEA/Info.hpp"
 #include "Thread/Mutex.hpp"
@@ -33,6 +34,7 @@ Copyright_License {
 #include "Language/Language.hpp"
 #include "Operation.hpp"
 #include "OS/Clock.hpp"
+#include "LogFile.hpp"
 
 #ifdef ANDROID
 #include "Android/InternalGPS.hpp"
@@ -69,8 +71,10 @@ DeviceDescriptor::Open(Port *_port, const struct DeviceRegister *_driver)
   device_blackboard.ScheduleMerge();
   device_blackboard.mutex.Unlock();
 
-  Com = _port;
+  LogStartUp(_T("DeviceDescriptor::Open"));
+  Com = new DumpPort(*_port);
   Driver = _driver;
+  LogStartUp(_T("DeviceDescriptor::Open 2"));
 
   assert(Driver->CreateOnPort != NULL || Driver->IsNMEAOut());
   if (Driver->CreateOnPort == NULL)
