@@ -452,6 +452,7 @@ XCSOAR_SOURCES := \
 	$(SRC)/MapWindow/TargetMapWindowEvents.cpp \
 	$(SRC)/MapWindow/TargetMapWindowDrag.cpp \
 	$(SRC)/MapButton/MapButton.cpp \
+	$(SRC)/MapButton/MainMenuButton.cpp \
 	$(SRC)/GestureManager.cpp \
 	$(SRC)/Renderer/HorizonRenderer.cpp \
 	$(SRC)/DrawThread.cpp \

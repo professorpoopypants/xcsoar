@@ -54,6 +54,10 @@ namespace InputEvents
    */
   void LeaveMode(const TCHAR *mode);
 
+  /**
+   * @return False if the main menu has been shown at least once.  Else true
+   */
+  bool IsMenuNeverShown();
   gcc_pure
   unsigned findKey(const TCHAR *data);
 

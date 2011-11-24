@@ -105,6 +105,8 @@ namespace InputEvents
    */
   static void drawButtons(mode Mode, bool full=false);
 
+  unsigned MenuTimeOut = 0;
+  bool menu_never_shown = true;
   static void ProcessMenuTimer();
   static void DoQueuedEvents(void);
 
@@ -419,6 +421,12 @@ InputEvents::getModeID()
   return current_mode;
 }
 
+bool
+InputEvents::IsMenuNeverShown()
+{
+  return menu_never_shown;
+}
+
 // -----------------------------------------------------------------------
 // Processing functions - which one to do
 // -----------------------------------------------------------------------
@@ -674,6 +682,7 @@ InputEvents::ShowMenu()
     sub_Pan(0);
 
   setMode(MODE_MENU);
+  menu_never_shown = false;
   MenuTimeOut = 0;
   ProcessMenuTimer();
 }
