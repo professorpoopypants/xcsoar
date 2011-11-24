@@ -450,6 +450,14 @@ XCSOAR_SOURCES := \
 	$(SRC)/MapWindow/TargetMapWindow.cpp \
 	$(SRC)/MapWindow/TargetMapWindowEvents.cpp \
 	$(SRC)/MapWindow/TargetMapWindowDrag.cpp \
+	$(SRC)/MapWindow/MapWindowStatusBar.cpp \
+	$(SRC)/MapButton/MapButton.cpp \
+	$(SRC)/MapButton/MapButtonPanel.cpp \
+	$(SRC)/MapButton/MainMenuButton.cpp \
+	$(SRC)/MapButton/LoggerStatusButton.cpp \
+	$(SRC)/MapButton/FlightModeButton.cpp \
+	$(SRC)/MapButton/FlarmStatusButton.cpp \
+	$(SRC)/MapButton/MapScaleButton.cpp \
 	$(SRC)/GestureManager.cpp \
 	$(SRC)/Renderer/HorizonRenderer.cpp \
 	$(SRC)/DrawThread.cpp \

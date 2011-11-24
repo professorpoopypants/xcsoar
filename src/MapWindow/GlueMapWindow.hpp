@@ -29,6 +29,8 @@ Copyright_License {
 #include "GestureManager.hpp"
 #include "Renderer/ThermalBandRenderer.hpp"
 #include "Renderer/FinalGlideBarRenderer.hpp"
+#include "MapWindow/MapWindowStatusBar.hpp"
+#include "MapButton/MainMenuButton.hpp"
 #include "DisplayMode.hpp"
 
 struct Look;
@@ -118,6 +120,8 @@ class GlueMapWindow : public MapWindow {
 
   ThermalBandRenderer thermal_band_renderer;
   FinalGlideBarRenderer final_glide_bar_renderer;
+  MapWindowStatusBar map_window_status_bar;
+  MainMenuButton main_menu_button;
 
   timer_t map_item_timer;
 
@@ -208,9 +212,10 @@ protected:
 private:
   void DrawMapScale(Canvas &canvas, const PixelRect &rc,
                     const MapWindowProjection &projection) const;
-  void DrawFlightMode(Canvas &canvas, const PixelRect &rc) const;
+  void DrawFlightMode(Canvas &canvas, const PixelRect &rc,
+                      PixelScalar offset) const;
   void DrawGPSStatus(Canvas &canvas, const PixelRect &rc,
-                     const NMEAInfo &info) const;
+                     const NMEAInfo &info, PixelScalar offset) const;
   void DrawCrossHairs(Canvas &canvas) const;
   void DrawThermalBand(Canvas &canvas, const PixelRect &rc) const;
   void DrawFinalGlide(Canvas &canvas, const PixelRect &rc) const;
