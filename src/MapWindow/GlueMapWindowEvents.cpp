@@ -37,6 +37,8 @@ Copyright_License {
 #include "Compiler.h"
 #include "Interface.hpp"
 #include "Screen/Fonts.hpp"
+#include "Logger/Logger.hpp"
+#include "LogFile.hpp" //debug
 
 #include <algorithm>
 
@@ -112,9 +114,17 @@ GlueMapWindow::on_mouse_down(PixelScalar x, PixelScalar y)
     map_item_timer = 0;
   }
 
+  LogDebug(_T("GlueMapWindow::on_mouse_down Button(%d, %d)"), x, y);
+  if (has_pointer() && !IsPanning() &&
+      main_menu_button.HandleMouseDown(x, y)) {
+    ignore_single_click = true;
+    return true;
+  }
+
   // Ignore single click event if double click detected
   if (ignore_single_click || drag_mode != DRAG_NONE)
     return true;
+
 
   mouse_down_clock.update();
   dragOverMinDist = false;
@@ -309,7 +319,6 @@ GlueMapWindow::on_paint_buffer(Canvas &canvas)
 {
   MapWindow::on_paint_buffer(canvas);
 
-  DrawMapScale(canvas, get_client_rect(), render_projection);
 }
 
 bool
@@ -334,8 +343,11 @@ GlueMapWindow::Render(Canvas &canvas, const PixelRect &rc)
     if (SettingsMap().show_thermal_profile)
       DrawThermalBand(canvas, rc);
     DrawStallRatio(canvas, rc);
-    DrawFlightMode(canvas, rc);
     DrawFinalGlide(canvas, rc);
-    DrawGPSStatus(canvas, rc, Basic());
+    DrawMapScale(canvas, get_client_rect(), render_projection);
+    PixelScalar offset = DrawMainMenuButton(canvas, rc,
+                                            InputEvents::IsMenuNeverShown());
+    DrawFlightMode(canvas, rc, offset);
+    DrawGPSStatus(canvas, rc, Basic(), offset);
   }
 }

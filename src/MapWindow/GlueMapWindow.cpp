@@ -26,6 +26,7 @@ Copyright_License {
 #include "DrawThread.hpp"
 #include "DeviceBlackboard.hpp"
 #include "Look/Look.hpp"
+#include "InputEvents.hpp"
 
 GlueMapWindow::GlueMapWindow(const Look &look)
   :MapWindow(look.map, look.traffic),

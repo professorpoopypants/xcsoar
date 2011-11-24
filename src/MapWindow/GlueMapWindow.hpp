@@ -29,6 +29,7 @@ Copyright_License {
 #include "GestureManager.hpp"
 #include "Renderer/ThermalBandRenderer.hpp"
 #include "Renderer/FinalGlideBarRenderer.hpp"
+#include "MapButton/MainMenuButton.hpp"
 #include "DisplayMode.hpp"
 
 struct Look;
@@ -118,6 +119,7 @@ class GlueMapWindow : public MapWindow {
 
   ThermalBandRenderer thermal_band_renderer;
   FinalGlideBarRenderer final_glide_bar_renderer;
+  MainMenuButton main_menu_button;
 
   timer_t map_item_timer;
 
@@ -208,9 +210,19 @@ protected:
 private:
   void DrawMapScale(Canvas &canvas, const PixelRect &rc,
                     const MapWindowProjection &projection) const;
-  void DrawFlightMode(Canvas &canvas, const PixelRect &rc) const;
+  /**
+   * Draws main menu button and main menu button help for 30 seconds
+   * @param menu_never_shown - if false, does not show help message
+   * @param canvas
+   * @param rc map window's dimensions
+   * @returns width of button image plus margin
+   */
+  PixelScalar DrawMainMenuButton(Canvas &canvas, const PixelRect &rc,
+                                 bool menu_never_shown);
+  void DrawFlightMode(Canvas &canvas, const PixelRect &rc,
+                      PixelScalar offset) const;
   void DrawGPSStatus(Canvas &canvas, const PixelRect &rc,
-                     const NMEAInfo &info) const;
+                     const NMEAInfo &info, PixelScalar offset) const;
   void DrawCrossHairs(Canvas &canvas) const;
   void DrawThermalBand(Canvas &canvas, const PixelRect &rc) const;
   void DrawFinalGlide(Canvas &canvas, const PixelRect &rc) const;

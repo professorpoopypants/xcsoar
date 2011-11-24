@@ -58,7 +58,7 @@ GlueMapWindow::DrawCrossHairs(Canvas &canvas) const
 
 void
 GlueMapWindow::DrawGPSStatus(Canvas &canvas, const PixelRect &rc,
-                             const NMEAInfo &info) const
+                             const NMEAInfo &info, PixelScalar offset) const
 {
   const TCHAR *txt;
   MaskedIcon *icon = NULL;
@@ -73,7 +73,7 @@ GlueMapWindow::DrawGPSStatus(Canvas &canvas, const PixelRect &rc,
     return; // early exit
   }
 
-  PixelScalar x = rc.left + Layout::FastScale(2);
+  PixelScalar x = rc.left + Layout::FastScale(2) - offset;
   PixelScalar y = rc.bottom - Layout::FastScale(35);
   icon->Draw(canvas, x, y);
 
@@ -87,8 +87,22 @@ GlueMapWindow::DrawGPSStatus(Canvas &canvas, const PixelRect &rc,
   TextInBox(canvas, txt, x, y, mode, rc, NULL);
 }
 
+PixelScalar
+GlueMapWindow::DrawMainMenuButton(Canvas &canvas, const PixelRect &rc,
+                                  bool menu_never_shown)
+{
+  const PixelScalar right_margin = Layout::Scale(3);
+  main_menu_button.Move(rc.right - main_menu_button.Width() -
+                        right_margin,
+                        rc.bottom - main_menu_button.Height());
+  main_menu_button.Draw(canvas, rc);
+  main_menu_button.DrawMenuButtonHelp(canvas, rc);
+  return main_menu_button.Width() + right_margin;
+}
+
 void
-GlueMapWindow::DrawFlightMode(Canvas &canvas, const PixelRect &rc) const
+GlueMapWindow::DrawFlightMode(Canvas &canvas, const PixelRect &rc,
+                              PixelScalar offset_m) const
 {
   PixelScalar offset = 0;
 
@@ -97,7 +111,7 @@ GlueMapWindow::DrawFlightMode(Canvas &canvas, const PixelRect &rc) const
     bool flip = (Basic().date_time_utc.second % 2) == 0;
     MaskedIcon &icon = flip ? Graphics::hLogger : Graphics::hLoggerOff;
     offset = icon.GetSize().cx;
-    icon.Draw(canvas, rc.right - offset, rc.bottom - icon.GetSize().cy);
+    icon.Draw(canvas, rc.right - offset - offset_m, rc.bottom - icon.GetSize().cy);
   }
 
   // draw flight mode
@@ -114,7 +128,7 @@ GlueMapWindow::DrawFlightMode(Canvas &canvas, const PixelRect &rc) const
 
   offset += bmp->GetSize().cx + Layout::Scale(6);
 
-  bmp->Draw(canvas, rc.right - offset,
+  bmp->Draw(canvas, rc.right - offset - offset_m,
             rc.bottom - bmp->GetSize().cy - Layout::Scale(4));
 
   // draw flarm status
@@ -141,7 +155,7 @@ GlueMapWindow::DrawFlightMode(Canvas &canvas, const PixelRect &rc) const
 
   offset += bmp->GetSize().cx + Layout::Scale(6);
 
-  bmp->Draw(canvas, rc.right - offset,
+  bmp->Draw(canvas, rc.right - offset - offset_m,
             rc.bottom - bmp->GetSize().cy - Layout::Scale(2));
 }
 

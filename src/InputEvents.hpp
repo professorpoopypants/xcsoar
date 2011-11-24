@@ -48,6 +48,11 @@ namespace InputEvents
   void setMode(mode mode);
   void setMode(const TCHAR *mode);
   mode getModeID();
+
+  /**
+   * @return False if the main menu has been shown at least once.  Else true
+   */
+  bool IsMenuNeverShown();
   unsigned findKey(const TCHAR *data);
   int findGCE(const TCHAR *data);
   int findNE(const TCHAR *data);

@@ -78,6 +78,7 @@ namespace InputEvents
   Mutex mutexEventQueue;
 
   unsigned MenuTimeOut = 0;
+  bool menu_never_shown = true;
   void ProcessMenuTimer();
   void DoQueuedEvents(void);
 
@@ -396,6 +397,12 @@ InputEvents::getModeID()
   return current_mode;
 }
 
+bool
+InputEvents::IsMenuNeverShown()
+{
+  return menu_never_shown;
+}
+
 // -----------------------------------------------------------------------
 // Processing functions - which one to do
 // -----------------------------------------------------------------------
@@ -696,6 +703,7 @@ InputEvents::ShowMenu()
   // Popup exit button if in .xci
   // setMode(_T("Exit"));
   setMode(MODE_MENU); // VENTA3
+  menu_never_shown = false;
   #endif
 
   ResetDisplayTimeOut();
