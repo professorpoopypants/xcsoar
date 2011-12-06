@@ -45,7 +45,6 @@ public:
   void RefreshStatus();
 
   virtual void Prepare(ContainerWindow &parent, const PixelRect &rc);
-  virtual bool Click();
   virtual void ReClick();
   virtual void Show(const PixelRect &rc);
 };

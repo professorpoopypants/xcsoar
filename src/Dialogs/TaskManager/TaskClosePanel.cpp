@@ -98,17 +98,6 @@ TaskClosePanel::Prepare(ContainerWindow &parent, const PixelRect &rc)
   wStatus->SetAlignCenter();
 }
 
-bool
-TaskClosePanel::Click()
-{
-  if (!(*task_modified)) {
-    dlgTaskManager::OnClose();
-    return false;
-  }
-
-  return true;
-}
-
 void
 TaskClosePanel::ReClick()
 {
@@ -118,6 +107,11 @@ TaskClosePanel::ReClick()
 void
 TaskClosePanel::Show(const PixelRect &rc)
 {
+  if (!(*task_modified)) {
+    dlgTaskManager::OnClose();
+    return;
+  }
+
   dlgTaskManager::TaskViewRestore(wTaskView);
   RefreshStatus();
 
