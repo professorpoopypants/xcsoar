@@ -42,11 +42,24 @@ public:
   TaskClosePanel(bool *_task_modified)
     :task_modified(_task_modified) {}
 
+  /**
+   * refreshes the buttons status of the text per the buttons
+   */
   void RefreshStatus();
 
   virtual void Prepare(ContainerWindow &parent, const PixelRect &rc);
+
+  /**
+   * Closes the TaskManager and saves any changes
+   */
   virtual void ReClick();
-  virtual void Show(const PixelRect &rc);
+
+  /**
+   * Before showing, checks if the task has been modified.
+   * If not modified, closes the Main TaskManager window immediately.
+   * If the task has been modified, shows the Close panel with Revert options
+   */
+virtual void Show(const PixelRect &rc);
 };
 
 #endif
