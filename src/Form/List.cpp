@@ -55,6 +55,7 @@ WndListFrame::WndListFrame(ContainerWindow &parent, const DialogLook &_look,
    items_visible(Height / item_height),
   cursor(0),
   dragging(false),
+  mouse_down_on_cursor(false),
   ActivateCallback(NULL),
   CursorCallback(NULL),
   PaintItemCallback(NULL)
@@ -418,8 +419,23 @@ WndListFrame::on_mouse_up(PixelScalar x, PixelScalar y)
   if (scroll_bar.is_dragging()) {
     scroll_bar.drag_end(this);
     return true;
-  } else if (dragging) {
+  }
+
+  int index = ItemIndexAt(y);
+  if (OverItems(x, y) && has_focus() && ActivateCallback != NULL &&
+      (unsigned)index == GetCursorIndex() && mouse_down_on_cursor &&
+      abs((int)y - drag_y_screen) < ((int)item_height / 5)) {
+    // If item was already selected and drag movement is small (not dragging)
+    // -> call event handler
+    ActivateCallback(index);
+    return true;
+  }
+
+  if (dragging) {
     drag_end();
+
+    if (!OverItems(x, y))
+      mouse_down_on_cursor = false;
 
 #ifndef _WIN32_WCE
     kinetic.MouseUp(GetPixelOrigin());
@@ -427,6 +443,7 @@ WndListFrame::on_mouse_up(PixelScalar x, PixelScalar y)
 #endif
 
     return true;
+
   } else
     return PaintWindow::on_mouse_up(x, y);
 }
@@ -468,6 +485,7 @@ WndListFrame::on_mouse_down(PixelScalar x, PixelScalar y)
   // End any previous drag
   scroll_bar.drag_end(this);
   drag_end();
+  mouse_down_on_cursor = false;
 
 #ifndef _WIN32_WCE
   kinetic_timer.Cancel();
@@ -501,31 +519,26 @@ WndListFrame::on_mouse_down(PixelScalar x, PixelScalar y)
       // page down
       MoveOrigin(items_visible);
   } else {
-    // if click in ListBox area
-    // -> select appropriate item
 
     int index = ItemIndexAt(y);
     // If mouse was clicked outside the list items -> cancel
-    if (index < 0)
+    if (!OverItems(x, y))
       return false;
 
-    if (had_focus && ActivateCallback != NULL &&
-        (unsigned)index == GetCursorIndex()) {
-      // If item was already selected
-      // -> call event handler
-      ActivateCallback(index);
-    } else {
-      // If item was not selected before
-      // -> select it
+    if (index == (int)GetCursorIndex())
+      mouse_down_on_cursor = true;
+    else {
       SetCursorIndex(index);
-
-      drag_y = GetPixelOrigin() + y;
-#ifndef _WIN32_WCE
-      kinetic.MouseDown(GetPixelOrigin());
-#endif
-      dragging = true;
-      set_capture();
     }
+
+    drag_y = GetPixelOrigin() + y;
+    drag_y_screen = y;
+
+#ifndef _WIN32_WCE
+    kinetic.MouseDown(GetPixelOrigin());
+#endif
+    dragging = true;
+    set_capture();
   }
 
   return true;

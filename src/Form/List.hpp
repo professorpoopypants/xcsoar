@@ -77,11 +77,23 @@ protected:
   bool dragging;
 
   /**
+   * True if the on_mouse_down event occurred on the item
+   * with the cursor after the cursor was set to the current item.
+   * (i.e. reclicking the cursor)
+   */
+  bool mouse_down_on_cursor;
+
+  /**
    * the vertical distance from the start of the drag relative to the
    * top of the list (not the top of the screen)
    */
   int drag_y;
 
+  /**
+   * the vertical distance from the start of the drag relative to the
+   * top of the screen
+   */
+  int drag_y_screen;
   ActivateCallback_t ActivateCallback;
   CursorCallback_t CursorCallback;
   PaintItemCallback_t PaintItemCallback;
