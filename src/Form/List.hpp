@@ -223,6 +223,13 @@ protected:
     invalidate(item_rect(i));
   }
 
+  /**
+   * @param x
+   * @param y
+   * @return True if x, y is over the visible list area
+   */
+  bool OverItems(PixelScalar x, PixelScalar y);
+
   void drag_end();
 
   void DrawItems(Canvas &canvas, unsigned start, unsigned end) const;

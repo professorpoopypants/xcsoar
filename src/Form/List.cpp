@@ -406,6 +406,13 @@ WndListFrame::on_key_down(unsigned key_code)
 }
 
 bool
+WndListFrame::OverItems(PixelScalar x, PixelScalar y)
+{
+  return x >= 0 && x <= (get_width() - scroll_bar.get_width()) &&
+          y >= 0 && y <= (PixelScalar)get_height();
+}
+
+bool
 WndListFrame::on_mouse_up(PixelScalar x, PixelScalar y)
 {
   if (scroll_bar.is_dragging()) {
