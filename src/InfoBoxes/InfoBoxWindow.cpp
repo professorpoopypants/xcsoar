@@ -474,8 +474,8 @@ InfoBoxWindow::OnMouseUp(PixelScalar x, PixelScalar y)
   if (click_clock.IsDefined()) {
     release_capture();
 
-    if ((unsigned)x < get_width() && (unsigned)y < get_height() &&
-        click_clock.Check(1000)) {
+    if (x >=0 && (unsigned)x < get_width() && y >= 0 &&
+        (unsigned)y < get_height() && click_clock.Check(1000)) {
       force_draw_selector = true;
       InfoBoxManager::ShowDlgInfoBox(id);
       force_draw_selector = false;
