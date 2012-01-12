@@ -387,6 +387,7 @@ XCSOAR_SOURCES := \
 	$(SRC)/InfoBoxes/Content/Glide.cpp \
 	$(SRC)/InfoBoxes/Content/MacCready.cpp \
 	$(SRC)/InfoBoxes/Content/Other.cpp \
+	$(SRC)/InfoBoxes/Content/Shortcut.cpp \
 	$(SRC)/InfoBoxes/Content/Speed.cpp \
 	$(SRC)/InfoBoxes/Content/Task.cpp \
 	$(SRC)/InfoBoxes/Content/Team.cpp \

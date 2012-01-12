@@ -38,6 +38,7 @@ Copyright_License {
 #include "InfoBoxes/Content/Trace.hpp"
 #include "InfoBoxes/Content/Weather.hpp"
 #include "InfoBoxes/Content/Airspace.hpp"
+#include "InfoBoxes/Content/Shortcut.hpp"
 
 #include "Language/Language.hpp"
 
@@ -1002,6 +1003,16 @@ const InfoBoxFactory::InfoBoxMetaData InfoBoxFactory::MetaData[NUM_TYPES] = {
     IBFHelper<InfoBoxContentHeadWind>::Create,
     e_HeadWind,
     e_HeadWind,
+  },
+
+  // e_Menu
+  {
+    N_("Menu button"),
+    N_("Menu"),
+    N_("Shows the main menu when clicked."),
+    IBFHelper<InfoBoxContentMenu>::Create,
+    e_Menu,
+    e_Menu,
   },
 };
 

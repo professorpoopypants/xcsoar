@@ -136,6 +136,7 @@ namespace InfoBoxFactory
     e_NearestAirspaceVertical,
     e_WP_MC0AltDiff,
     e_HeadWind,
+    e_Menu, /* menu button to show menu */
 
     e_NUM_TYPES /* Last item */
   };
