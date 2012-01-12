@@ -475,10 +475,17 @@ InfoBoxWindow::OnMouseUp(PixelScalar x, PixelScalar y)
     release_capture();
 
     if (x >=0 && (unsigned)x < get_width() && y >= 0 &&
-        (unsigned)y < get_height() && click_clock.Check(1000)) {
-      force_draw_selector = true;
-      InfoBoxManager::ShowDlgInfoBox(id);
-      force_draw_selector = false;
+        (unsigned)y < get_height()) {
+      if (click_clock.Check(1000)) {
+        force_draw_selector = true;
+        InfoBoxManager::ShowDlgInfoBox(id);
+        force_draw_selector = false;
+      } else
+        if (content != NULL) {
+          force_draw_selector = true;
+          content->OnClick();
+          force_draw_selector = false;
+        }
     }
 
     click_clock.Reset();

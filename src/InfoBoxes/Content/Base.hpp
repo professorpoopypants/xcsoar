@@ -85,6 +85,12 @@ public:
     return NULL;
   }
 
+  /**
+   * Handles click on the InfoBox
+   */
+  virtual void OnClick() {
+  }
+
   static void SetTitleFromWaypointName(InfoBoxData &data,
                                        const Waypoint* waypoint);
 
