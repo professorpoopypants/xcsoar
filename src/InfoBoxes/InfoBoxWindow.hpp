@@ -47,6 +47,7 @@ enum BorderKind_t {
 struct InfoBoxSettings;
 struct InfoBoxLook;
 struct UnitsLook;
+struct ButtonLook;
 
 class InfoBoxWindow : public PaintWindow
 {
@@ -60,6 +61,12 @@ private:
   const InfoBoxSettings &settings;
   const InfoBoxLook &look;
   const UnitsLook &units_look;
+
+  /**
+   * look to draw "Close" to look like a button over the
+   * InfoBox while the access dialog is visible
+   */
+  const ButtonLook &button_look;
 
   int border_kind;
 
@@ -92,6 +99,28 @@ private:
    * @param canvas The canvas to paint on
    */
   void PaintValue(Canvas &canvas);
+
+  /**
+   * Sets font for canvas based on value text
+   * Also sets ascent_height, capital_height and value_size
+   * based on value text
+   * @param canvas The canvas to paint on
+   * @param value The text to be displayed
+   * @param ascent_height ascent height of text for font to be used
+   * @capital_height height of text for font to be used
+   * @value_size size of text for font to be used
+   */
+  void GetValueFont(Canvas &canvas, const TCHAR* value,
+                    UPixelScalar &ascent_height,
+                    UPixelScalar &capital_height,
+                    PixelSize &value_size);
+
+  /**
+   * Paints the word "Close" in the InfoBox on the given canvas
+   * @param canvas The canvas to paint on
+   */
+  void PaintClose(Canvas &canvas);
+
   /**
    * Paints the InfoBox comment on the given canvas
    * @param canvas The canvas to paint on
@@ -133,7 +162,7 @@ public:
   InfoBoxWindow(ContainerWindow &parent, PixelScalar x, PixelScalar y,
                 UPixelScalar width, UPixelScalar height, int border_flags,
                 const InfoBoxSettings &settings, const InfoBoxLook &_look,
-                const UnitsLook &units_look,
+                const UnitsLook &units_look, const ButtonLook &button_look,
                 WindowStyle style=WindowStyle());
 
   ~InfoBoxWindow();

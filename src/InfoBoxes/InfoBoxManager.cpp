@@ -27,6 +27,7 @@ Copyright_License {
 #include "InfoBoxes/InfoBoxLayout.hpp"
 #include "InfoBoxes/Panel/InfoBoxDescription.hpp"
 #include "Look/InfoBoxLook.hpp"
+#include "Look/ButtonLook.hpp"
 #include "InfoBoxes/Content/Factory.hpp"
 #include "InfoBoxes/Content/Base.hpp"
 #include "Profile/InfoBoxConfig.hpp"
@@ -58,6 +59,12 @@ namespace InfoBoxManager
    * content objects need to be created.
    */
   static bool first;
+
+  /**
+  * Index of InfoBox access popup widget currently being shown
+  * or -1 if none is currently shown
+  */
+  static int visible_popup_id = -1;
 
   InfoBoxFactory::t_InfoBox GetCurrentType(unsigned box);
 
@@ -128,6 +135,18 @@ InfoBoxManager::Event_Select(int i)
     InfoBoxes[InfoFocus]->SetFocus();
   else
     XCSoarInterface::main_window.SetDefaultFocus();
+}
+
+int
+InfoBoxManager::GetVisibleAccessPopupID()
+{
+  return visible_popup_id;
+}
+
+void
+InfoBoxManager::SetVisibleAccessPopupID(int id)
+{
+  visible_popup_id = id;
 }
 
 unsigned
@@ -451,7 +470,8 @@ InfoBoxManager::GetInfoBoxBorder(unsigned i)
 
 void
 InfoBoxManager::Create(PixelRect rc, const InfoBoxLayout::Layout &_layout,
-                       const InfoBoxLook &look, const UnitsLook &units_look)
+                       const InfoBoxLook &look, const UnitsLook &units_look,
+                       const ButtonLook &button_look)
 {
   const InfoBoxSettings &settings =
     CommonInterface::GetUISettings().info_boxes;
@@ -471,7 +491,7 @@ InfoBoxManager::Create(PixelRect rc, const InfoBoxLayout::Layout &_layout,
                                      rc.left, rc.top,
                                      rc.right - rc.left, rc.bottom - rc.top,
                                      Border, settings, look, units_look,
-                                     style);
+                                     button_look, style);
   }
 
   InfoBoxesHidden = true;

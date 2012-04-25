@@ -33,6 +33,7 @@ struct InfoBoxSettings;
 
 struct InfoBoxLook;
 struct UnitsLook;
+struct ButtonLook;
 class InfoBoxWindow;
 
 namespace InfoBoxLayout {
@@ -75,7 +76,8 @@ namespace InfoBoxManager
   void SetDirty();
 
   void Create(PixelRect rc, const InfoBoxLayout::Layout &layout,
-              const InfoBoxLook &look, const UnitsLook &units_look);
+              const InfoBoxLook &look, const UnitsLook &units_look,
+              const ButtonLook &button_look);
   void Destroy();
   void Show();
   void Hide();
@@ -85,6 +87,18 @@ namespace InfoBoxManager
   unsigned GetCurrentPanel();
   const TCHAR* GetCurrentPanelName();
   const TCHAR* GetPanelName(unsigned panel);
+
+  /**
+   * returns ID InfoBox access dialog currently being shown
+   * or -1 if none is currently shown
+   */
+  int GetVisibleAccessPopupID();
+
+  /**
+   * sets the ID of the InfoBox access dialog that will be
+   * displayed, or -1 if none shall be displayed
+   */
+  void SetVisibleAccessPopupID(int id);
 
   InfoBoxFactory::t_InfoBox GetType(unsigned box, unsigned panel);
   const TCHAR* GetTitle(unsigned box);

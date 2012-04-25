@@ -25,6 +25,7 @@ Copyright_License {
 #include "InfoBoxes/InfoBoxManager.hpp"
 #include "Look/InfoBoxLook.hpp"
 #include "Look/UnitsLook.hpp"
+#include "Look/ButtonLook.hpp"
 #include "Input/InputEvents.hpp"
 #include "Compatibility/string.h"
 #include "Renderer/UnitSymbolRenderer.hpp"
@@ -34,6 +35,7 @@ Copyright_License {
 #include "Screen/ContainerWindow.hpp"
 #include "Screen/Key.h"
 #include "Interface.hpp"
+#include "Language/Language.hpp"
 #include "Asset.hpp"
 
 #ifdef ENABLE_OPENGL
@@ -54,10 +56,12 @@ InfoBoxWindow::InfoBoxWindow(ContainerWindow &_parent,
                              int border_flags, const InfoBoxSettings &_settings,
                              const InfoBoxLook &_look,
                              const UnitsLook &_units_look,
+                             const ButtonLook &_button_look,
                              WindowStyle style)
   :content(NULL),
    parent(_parent),
    settings(_settings), look(_look), units_look(_units_look),
+   button_look(_button_look),
    border_kind(border_flags),
    force_draw_selector(false),
    focus_timer(*this)
@@ -134,6 +138,25 @@ InfoBoxWindow::PaintTitle(Canvas &canvas)
 }
 
 void
+InfoBoxWindow::GetValueFont(Canvas &canvas, const TCHAR* value,
+                            UPixelScalar &ascent_height,
+                            UPixelScalar &capital_height,
+                            PixelSize &value_size)
+{
+  canvas.Select(*look.value.font);
+  ascent_height = look.value.font->GetAscentHeight();
+  capital_height = look.value.font->GetCapitalHeight();
+
+  value_size = canvas.CalcTextSize(value);
+  if (value_size.cx > value_rect.right - value_rect.left) {
+    canvas.Select(*look.small_font);
+    ascent_height = look.small_font->GetAscentHeight();
+    capital_height = look.small_font->GetCapitalHeight();
+    value_size = canvas.CalcTextSize(value);
+  }
+}
+
+void
 InfoBoxWindow::PaintValue(Canvas &canvas)
 {
   if (data.value.empty())
@@ -179,18 +202,11 @@ InfoBoxWindow::PaintValue(Canvas &canvas)
     return;
   }
 #endif
+  UPixelScalar ascent_height;
+  UPixelScalar capital_height;
+  PixelSize value_size;
 
-  canvas.Select(*look.value.font);
-  UPixelScalar ascent_height = look.value.font->GetAscentHeight();
-  UPixelScalar capital_height = look.value.font->GetCapitalHeight();
-
-  PixelSize value_size = canvas.CalcTextSize(data.value);
-  if (value_size.cx > value_rect.right - value_rect.left) {
-    canvas.Select(*look.small_font);
-    ascent_height = look.small_font->GetAscentHeight();
-    capital_height = look.small_font->GetCapitalHeight();
-    value_size = canvas.CalcTextSize(data.value);
-  }
+  GetValueFont(canvas, data.value, ascent_height, capital_height, value_size);
 
   PixelSize unit_size;
   const UnitSymbol *unit_symbol = units_look.GetSymbol(data.value_unit);
@@ -224,6 +240,27 @@ InfoBoxWindow::PaintValue(Canvas &canvas)
 }
 
 void
+InfoBoxWindow::PaintClose(Canvas &canvas)
+{
+  canvas.SetTextColor(button_look.standard.foreground_color);
+  canvas.Select(*look.value.font);
+
+  const TCHAR* value = _("Close");
+
+  UPixelScalar ascent_height;
+  UPixelScalar capital_height;
+  PixelSize value_size;
+
+  GetValueFont(canvas, value, ascent_height, capital_height, value_size);
+  PixelScalar y = value_rect.top + 1 - ascent_height +
+    (value_rect.bottom - value_rect.top + capital_height) / 2;
+  PixelScalar x = max(PixelScalar(1),
+                      PixelScalar((value_rect.left + value_rect.right -
+                                   value_size.cx) / 2));
+  canvas.TextAutoClipped(x, y, value);
+}
+
+void
 InfoBoxWindow::PaintComment(Canvas &canvas)
 {
   if (data.comment.empty())
@@ -248,20 +285,26 @@ InfoBoxWindow::PaintComment(Canvas &canvas)
 void
 InfoBoxWindow::Paint(Canvas &canvas)
 {
-  if (HasFocus() || force_draw_selector)
+  if (id == InfoBoxManager::GetVisibleAccessPopupID())
+    canvas.Clear(button_look.standard.background_color);
+  else if (HasFocus() || force_draw_selector)
     canvas.Clear(look.focused_background_color);
   else
     canvas.Clear(look.background_color);
 
-  if (data.GetCustom() && content != NULL)
+  if (data.GetCustom() && content != NULL
+      && id != InfoBoxManager::GetVisibleAccessPopupID())
     content->OnCustomPaint(*this, canvas);
 
   canvas.SetBackgroundTransparent();
 
-  PaintTitle(canvas);
-  PaintComment(canvas);
-  PaintValue(canvas);
-
+  if (id == InfoBoxManager::GetVisibleAccessPopupID())
+    PaintClose(canvas);
+  else {
+    PaintTitle(canvas);
+    PaintComment(canvas);
+    PaintValue(canvas);
+  }
   if (border_kind != 0) {
     canvas.Select(look.border_pen);
 

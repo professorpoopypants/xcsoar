@@ -100,6 +100,7 @@ BaseAccessPanel::Unprepare()
   delete header_text;
   delete setup_button;
   NullWidget::Unprepare();
+  InfoBoxManager::SetVisibleAccessPopupID(-1);
 }
 
 void
@@ -148,6 +149,7 @@ BaseAccessPanel::Prepare(ContainerWindow &parent, const PixelRect &rc)
 
   content_rc = base_rc;
   content_rc.top += GetHeaderHeight();
+  InfoBoxManager::SetVisibleAccessPopupID(id);
 }
 
 
