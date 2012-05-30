@@ -25,6 +25,7 @@ Copyright_License {
 #include "InfoBoxes/InfoBoxManager.hpp"
 #include "InfoBoxes/InfoBoxWindow.hpp"
 #include "InfoBoxes/InfoBoxLayout.hpp"
+#include "InfoBoxes/Panel/InfoBoxDescription.hpp"
 #include "Look/InfoBoxLook.hpp"
 #include "InfoBoxes/Content/Factory.hpp"
 #include "InfoBoxes/Content/Base.hpp"
@@ -494,7 +495,35 @@ OnInfoBoxHelp(unsigned item)
 void
 InfoBoxManager::ShowDlgInfoBox(const int id)
 {
-  dlgInfoBoxAccessShowModeless(id);
+  assert (id > -1);
+
+  const InfoBoxContent::DialogContent *dlgContent;
+  dlgContent = InfoBoxManager::GetDialogContent(id);
+  Widget *widget = NULL;
+
+  if (dlgContent != NULL) {
+    if (dlgContent->GetShowInTabLayout()) {
+      dlgInfoBoxAccessShowModeless(id);
+      return;
+    } else {
+      for (int i = 0; i < dlgContent->PANELSIZE; i++) {
+        assert(dlgContent->Panels[i].load != NULL);
+
+        widget = dlgContent->Panels[i].load(id);
+
+        // only use the first non-NULL widget
+        if (widget != NULL)
+          break;
+      }
+    }
+  }
+
+  if (widget == NULL)
+    CommonInterface::main_window.SetWidget(new InfoBoxDescriptionPanel(id));
+  else
+    CommonInterface::main_window.SetWidget(widget);
+
+  CommonInterface::main_window.ActivateMap();
 }
 
 void
