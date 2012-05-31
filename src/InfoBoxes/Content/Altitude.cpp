@@ -24,7 +24,6 @@ Copyright_License {
 #include "InfoBoxes/Content/Altitude.hpp"
 #include "InfoBoxes/Panel/AltitudeInfo.hpp"
 #include "InfoBoxes/Panel/AltitudeSimulator.hpp"
-#include "InfoBoxes/Panel/AltitudeSetup.hpp"
 #include "InfoBoxes/InfoBoxWindow.hpp"
 #include "InfoBoxes/InfoBoxManager.hpp"
 #include "Units/Units.hpp"
@@ -56,15 +55,11 @@ InfoBoxContentAltitude::PanelContent Panels[] = {
   InfoBoxContentAltitude::PanelContent (
     N_("Info"),
     LoadAltitudeInfoPanel),
-
-  InfoBoxContentAltitude::PanelContent (
-    N_("Setup"),
-    LoadAltitudeSetupPanel)
 };
 
 static gcc_constexpr_data
 InfoBoxContentAltitude::DialogContent dlgContent = {
-  ARRAY_SIZE(Panels), &Panels[0], true,
+  ARRAY_SIZE(Panels), &Panels[0], false,
 };
 
 const InfoBoxContentAltitude::DialogContent *
@@ -110,53 +105,6 @@ InfoBoxContentAltitudeGPS::Update(InfoBoxData &data)
 
   data.SetValueFromAltitude(basic.gps_altitude);
   data.SetCommentFromAlternateAltitude(basic.gps_altitude);
-}
-
-static void
-ChangeAltitude(const fixed step)
-{
-  const NMEAInfo &basic = CommonInterface::Basic();
-
-  device_blackboard->SetAltitude(basic.gps_altitude +
-                                 (fixed)Units::ToSysAltitude(step));
-}
-
-bool
-InfoBoxContentAltitudeGPS::HandleKey(const InfoBoxKeyCodes keycode)
-{
-  const NMEAInfo &basic = CommonInterface::Basic();
-
-  if (!is_simulator())
-    return false;
-  if (!basic.gps.simulator)
-    return false;
-
-  const Angle a5 = Angle::Degrees(fixed(5));
-
-  switch (keycode) {
-  case ibkUp:
-    ChangeAltitude(fixed(+100));
-    return true;
-
-  case ibkDown:
-    ChangeAltitude(fixed(-100));
-    return true;
-
-  case ibkLeft:
-    device_blackboard->SetTrack(
-        basic.track - a5);
-    return true;
-
-  case ibkRight:
-    device_blackboard->SetTrack(
-        basic.track + a5);
-    return true;
-
-  case ibkEnter:
-    break;
-  }
-
-  return false;
 }
 
 void

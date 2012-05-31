@@ -22,89 +22,217 @@ Copyright_License {
 */
 
 #include "AltitudeInfo.hpp"
-#include "Util/Macros.hpp"
+#include "Base.hpp"
 #include "Interface.hpp"
+#include "Components.hpp"
+#include "Blackboard/DeviceBlackboard.hpp"
 #include "Language/Language.hpp"
+#include "Units/Units.hpp"
 #include "Formatter/UserUnits.hpp"
 #include "Simulator.hpp"
 #include "Dialogs/dlgInfoBoxAccess.hpp"
 #include "Form/Util.hpp"
-#include "Form/XMLWidget.hpp"
+#include "Form/DataField/String.hpp"
+#include "Form/RowFormWidget.hpp"
+#include "Form/Panel.hpp"
+#include "Form/DataField/Listener.hpp"
+#include "Form/DataField/Float.hpp"
 #include "Blackboard/BlackboardListener.hpp"
+#include "Operation/MessageOperationEnvironment.hpp"
+#include "UIGlobals.hpp"
+#include "Screen/Layout.hpp"
+#include "Util/StaticString.hpp"
 
-class AltitudeInfoPanel : public XMLWidget, NullBlackboardListener {
+enum ControlIndex {
+  Agl,
+  Baro,
+  Gps,
+  Terrain,
+  Spacer,
+  Qnh,
+  LastItemInList,
+};
+
+class AltitudeInfoPanel : public BaseAccessPanel, NullBlackboardListener,
+  DataFieldListener {
+protected:
+  RowFormWidget *row_form_widget;
+
 public:
+  AltitudeInfoPanel(unsigned id)
+    :BaseAccessPanel(id) {
+    row_form_widget = new RowFormWidget(UIGlobals::GetDialogLook()) ;
+  }
+
+  ~AltitudeInfoPanel() {
+    delete row_form_widget;
+  }
+
   void Refresh();
 
+  virtual void Initialise(ContainerWindow &parent, const PixelRect &rc);
   virtual void Prepare(ContainerWindow &parent, const PixelRect &rc);
   virtual void Show(const PixelRect &rc);
   virtual void Hide();
 
+protected:
   virtual void OnGPSUpdate(const MoreData &basic);
+
+  /* methods from DataFieldListener */
+  virtual void OnModified(DataField &df);
+
+  void OnQNH(DataFieldFloat& sender);
 };
+
+void
+AltitudeInfoPanel::OnModified(DataField &df)
+{
+  if (row_form_widget->IsDataField(Qnh, df))
+    OnQNH((DataFieldFloat&)df);
+}
+
+void
+AltitudeInfoPanel::OnQNH(DataFieldFloat& sender)
+{
+  ComputerSettings &settings_computer =
+    CommonInterface::SetComputerSettings();
+
+  settings_computer.pressure = Units::FromUserPressure(sender.GetAsFixed());
+  settings_computer.pressure_available.Update(CommonInterface::Basic().clock);
+
+  MessageOperationEnvironment env;
+  device_blackboard->SetQNH(Units::FromUserPressure(sender.GetAsFixed()), env);
+
+  Refresh();
+}
 
 void
 AltitudeInfoPanel::Refresh()
 {
   const DerivedInfo &calculated = CommonInterface::Calculated();
   const NMEAInfo &basic = CommonInterface::Basic();
-  TCHAR sTmp[32];
+  StaticString<32> temp;
 
   if (!calculated.altitude_agl_valid) {
-    SetFormValue(form, _T("prpAltAGL"), _("N/A"));
+    row_form_widget->SetText(Agl, _("N/A"));
   } else {
     // Set Value
-    FormatUserAltitude(calculated.altitude_agl, sTmp, ARRAY_SIZE(sTmp));
-    SetFormValue(form, _T("prpAltAGL"), sTmp);
+    FormatUserAltitude(calculated.altitude_agl, temp.buffer(), temp.length());
+    row_form_widget->SetText(Agl, temp.c_str());
   }
 
   if (!basic.baro_altitude_available) {
-    SetFormValue(form, _T("prpAltBaro"), _("N/A"));
+    row_form_widget->SetText(Baro, _("N/A"));
   } else {
     // Set Value
-    FormatUserAltitude(basic.baro_altitude, sTmp, ARRAY_SIZE(sTmp));
-    SetFormValue(form, _T("prpAltBaro"), sTmp);
+    FormatUserAltitude(basic.baro_altitude, temp.buffer(), temp.length());
+    row_form_widget->SetText(Baro, temp.c_str());
   }
 
   if (!basic.gps_altitude_available) {
-    SetFormValue(form, _T("prpAltGPS"), _("N/A"));
+    row_form_widget->SetText(Gps, _("N/A"));
   } else {
     // Set Value
-    FormatUserAltitude(basic.gps_altitude, sTmp, ARRAY_SIZE(sTmp));
-    SetFormValue(form, _T("prpAltGPS"), sTmp);
+    FormatUserAltitude(basic.gps_altitude, temp.buffer(), temp.length());
+    row_form_widget->SetText(Gps, temp.c_str());
   }
 
   if (!calculated.terrain_valid){
-    SetFormValue(form, _T("prpTerrain"), _("N/A"));
+    row_form_widget->SetText(Terrain, _("N/A"));
   } else {
     // Set Value
     FormatUserAltitude(calculated.terrain_altitude,
-                              sTmp, ARRAY_SIZE(sTmp));
-    SetFormValue(form, _T("prpTerrain"), sTmp);
+                              temp.buffer(), temp.length());
+    row_form_widget->SetText(Terrain, temp.c_str());
   }
 }
-
+void
+AltitudeInfoPanel::Initialise(ContainerWindow &parent, const PixelRect &rc)
+{
+  BaseAccessPanel::Initialise(parent, rc);
+  row_form_widget->Initialise(GetClientAreaWindow(),
+                              GetClientAreaWindow().GetClientRect());
+}
 void
 AltitudeInfoPanel::Prepare(ContainerWindow &parent, const PixelRect &rc)
 {
-  LoadWindow(NULL, parent, _T("IDR_XML_INFOBOXALTITUDEINFO"));
+  BaseAccessPanel::Prepare(parent, rc);
+  row_form_widget->Prepare(GetClientAreaWindow(), content_rc);
+
+  const DerivedInfo &calculated = CommonInterface::Calculated();
+  const NMEAInfo &basic = CommonInterface::Basic();
+  StaticString<32> temp;
+
+  if (!calculated.altitude_agl_valid) {
+    row_form_widget->AddReadOnly(_T("H AGL"), NULL, _("N/A"));
+  } else {
+    FormatUserAltitude(calculated.altitude_agl, temp.buffer(), temp.length());
+    row_form_widget->AddReadOnly(_T("H AGL"), NULL, temp.c_str());
+  }
+
+  if (!basic.baro_altitude_available) {
+    row_form_widget->AddReadOnly(_T("H Baro"), NULL, _("N/A"));
+  } else {
+    FormatUserAltitude(basic.baro_altitude, temp.buffer(), temp.length());
+    row_form_widget->AddReadOnly(_T("H Baro"), NULL, temp.c_str());
+  }
+
+  if (!basic.gps_altitude_available) {
+    row_form_widget->AddReadOnly(_T("H GPS"), NULL, _("N/A"));
+  } else {
+    FormatUserAltitude(basic.gps_altitude, temp.buffer(), temp.length());
+    row_form_widget->AddReadOnly(_T("H GPS"), NULL, temp.c_str());
+  }
+
+  if (!calculated.terrain_valid){
+    row_form_widget->AddReadOnly(_T("H GND"), NULL, _("N/A"));
+  } else {
+    FormatUserAltitude(calculated.terrain_altitude,
+                       temp.buffer(), temp.length());
+    row_form_widget->AddReadOnly(_T("H GND"), NULL, temp.c_str());
+  }
+
+  row_form_widget->AddSpacer();
+
+  row_form_widget->AddFloat(_("QNH"),
+    _("Area pressure for barometric altimeter calibration.  This is set automatically if Vega connected."),
+    GetUserPressureFormat(), GetUserPressureFormat(),
+    Units::ToUserPressure(Units::ToSysUnit(fixed(850), Unit::HECTOPASCAL)),
+    Units::ToUserPressure(Units::ToSysUnit(fixed(1300), Unit::HECTOPASCAL)),
+    Units::ToUserPressure(Units::ToSysUnit(fixed_one, Unit::HECTOPASCAL)),
+    false,
+    UnitGroup::PRESSURE,
+    CommonInterface::GetComputerSettings().pressure.GetHectoPascal(),
+    this);
 }
 
 void
 AltitudeInfoPanel::Show(const PixelRect &rc)
 {
-  Refresh();
-  XMLWidget::Show(rc);
+  unsigned controls = LastItemInList - 1;
+  unsigned controls_height = Layout::GetMinimumControlHeight() * controls;
 
+  unsigned controls_width = max((PixelScalar)(
+                                (rc.right - rc.left) / 2),
+                                (PixelScalar)100);
+  PixelRect new_rect;
+  new_rect.left = (rc.right - rc.left - controls_width) / 2;
+  new_rect.top = (rc.bottom - rc.top - controls_height) / 2;
+  new_rect.right = new_rect.left + controls_width;
+  new_rect.bottom = rc.bottom;
+
+  row_form_widget->Show(new_rect);
   CommonInterface::GetLiveBlackboard().AddListener(*this);
+
+  BaseAccessPanel::Show(rc);
 }
 
 void
 AltitudeInfoPanel::Hide()
 {
   CommonInterface::GetLiveBlackboard().RemoveListener(*this);
-
-  XMLWidget::Hide();
+  BaseAccessPanel::Hide();
+  row_form_widget->Hide();
 }
 
 void
@@ -116,5 +244,5 @@ AltitudeInfoPanel::OnGPSUpdate(const MoreData &basic)
 Widget *
 LoadAltitudeInfoPanel(unsigned id)
 {
-  return new AltitudeInfoPanel();
+  return new AltitudeInfoPanel(id);
 }

@@ -22,82 +22,152 @@ Copyright_License {
 */
 
 #include "AltitudeSimulator.hpp"
+#include "Base.hpp"
 #include "Interface.hpp"
 #include "Components.hpp"
 #include "Blackboard/DeviceBlackboard.hpp"
 #include "Units/Units.hpp"
 #include "Simulator.hpp"
-#include "Dialogs/CallBackTable.hpp"
-#include "Form/XMLWidget.hpp"
+#include "Form/PanelWidget.hpp"
+#include "Form/Button.hpp"
+#include "Form/Panel.hpp"
+#include "Form/Frame.hpp"
+#include "UIGlobals.hpp"
+#include "Screen/Fonts.hpp"
+#include "Screen/Layout.hpp"
+#include "Formatter/UserUnits.hpp"
 
-class WndButton;
 
-class AltitudeSimulatorPanel : public XMLWidget {
-public:
-  void Refresh();
-
-  virtual void Prepare(ContainerWindow &parent, const PixelRect &rc);
+enum ControlIndex {
+  BigPlus,
+  LittlePlus,
+  AltitudeValue,
+  BigMinus,
+  LittleMinus,
 };
 
-static void
-ChangeAltitude(const fixed step)
+class AltitudeSimulatorPanel : public BaseAccessPanel, NumberButtonLayout {
+protected:
+
+  /**
+   * The four buttons and the frame use the layout of the rectangles
+   * created by NumberButtonLayout class
+   */
+  WndButton *big_plus, *big_minus, *little_plus, *little_minus;
+  WndFrame *altitude_value;
+
+  /**
+   * used to avoid blackboard delays in showing values
+   */
+  fixed altitude_fast;
+
+public:
+  AltitudeSimulatorPanel(int id)
+    :BaseAccessPanel(id) {}
+
+protected:
+  void Refresh();
+  virtual void Prepare(ContainerWindow &parent, const PixelRect &rc);
+  virtual void Unprepare();
+
+  /* methods from ActionListener */
+  virtual void OnAction(int id);
+
+  void ChangeAltitude(const fixed step);
+};
+
+void
+AltitudeSimulatorPanel::OnAction(int id)
+{
+  assert(is_simulator());
+
+  switch (id) {
+  case BigPlus:
+    ChangeAltitude(fixed(+100));
+    break;
+  case LittlePlus:
+    ChangeAltitude(fixed(+10));
+    break;
+  case BigMinus:
+    ChangeAltitude(fixed(-100));
+    break;
+  case LittleMinus:
+    ChangeAltitude(fixed(-10));
+    break;
+  default:
+    BaseAccessPanel::OnAction(id);
+  }
+}
+
+void
+AltitudeSimulatorPanel::ChangeAltitude(const fixed step)
 {
   const NMEAInfo &basic = CommonInterface::Basic();
-
+  altitude_fast += (fixed)Units::ToSysAltitude(step);
   device_blackboard->SetAltitude(basic.gps_altitude +
                                  (fixed)Units::ToSysAltitude(step));
+  Refresh();
 }
 
-static void
-PnlSimulatorOnPlusBig(gcc_unused WndButton &Sender)
+void
+AltitudeSimulatorPanel::Refresh()
 {
-  if (!is_simulator())
-    return;
-
-  ChangeAltitude(fixed(+100));
+  StaticString<32> buffer;
+  FormatUserAltitude(altitude_fast, buffer.buffer(), true);
+  altitude_value->SetCaption(buffer.c_str());
 }
-
-static void
-PnlSimulatorOnPlusSmall(gcc_unused WndButton &Sender)
-{
-  if (!is_simulator())
-    return;
-
-  ChangeAltitude(fixed(+10));
-}
-
-static void
-PnlSimulatorOnMinusSmall(gcc_unused WndButton &Sender)
-{
-  if (!is_simulator())
-    return;
-
-  ChangeAltitude(fixed(-10));
-}
-
-static void
-PnlSimulatorOnMinusBig(gcc_unused WndButton &Sender)
-{
-  if (!is_simulator())
-    return;
-
-  ChangeAltitude(fixed(-100));
-}
-
-static gcc_constexpr_data
-CallBackTableEntry CallBackTable[] = {
-  DeclareCallBackEntry(PnlSimulatorOnPlusBig),
-  DeclareCallBackEntry(PnlSimulatorOnPlusSmall),
-  DeclareCallBackEntry(PnlSimulatorOnMinusSmall),
-  DeclareCallBackEntry(PnlSimulatorOnMinusBig),
-  DeclareCallBackEntry(NULL)
-};
 
 void
 AltitudeSimulatorPanel::Prepare(ContainerWindow &parent,
                                 const PixelRect &rc)
 {
-  LoadWindow(CallBackTable, parent, _T("IDR_XML_INFOBOXALTITUDESIMULATOR"));
+  BaseAccessPanel::Prepare(parent, rc);
+  NumberButtonLayout::Prepare(parent, content_rc);
+
+  const DialogLook &look = UIGlobals::GetDialogLook();
+
+  ButtonWindowStyle button_style;
+  button_style.TabStop();
+  button_style.multiline();
+  big_plus = new WndButton(GetClientAreaWindow(), look, _T("+100"), big_plus_rc,
+                           button_style, this, BigPlus);
+  big_plus->SetFont(Fonts::infobox);
+
+  little_plus = new WndButton(GetClientAreaWindow(), look, _T("+10"), little_plus_rc,
+                              button_style, this, LittlePlus);
+  little_plus->SetFont(Fonts::infobox);
+
+  big_minus = new WndButton(GetClientAreaWindow(), look, _T("-100"), big_minus_rc,
+                            button_style, this, BigMinus);
+  big_minus->SetFont(Fonts::infobox);
+
+  little_minus = new WndButton(GetClientAreaWindow(), look, _T("-10"), little_minus_rc,
+                               button_style, this, LittleMinus);
+  little_minus->SetFont(Fonts::infobox);
+
+  WindowStyle style_frame;
+  altitude_value = new WndFrame(GetClientAreaWindow(), look,
+                                value_rc.left, value_rc.top,
+                                value_rc.right - value_rc.left,
+                                value_rc.bottom - value_rc.top,
+                                style_frame);
+  altitude_value->SetVAlignCenter();
+  altitude_value->SetAlignCenter();
+  altitude_value->SetFont(Fonts::infobox);
+
+  altitude_fast = CommonInterface::Basic().gps_altitude;
+  Refresh();
+}
+
+void
+AltitudeSimulatorPanel::Unprepare()
+{
+  delete big_plus;
+  delete big_minus;
+  delete little_plus;
+  delete little_minus;
+  delete altitude_value;
+  BaseAccessPanel::Unprepare();
 }
 
 Widget *
@@ -108,5 +178,5 @@ LoadAltitudeSimulatorPanel(unsigned id)
   if (!basic.gps.simulator)
     return NULL;
 
-  return new AltitudeSimulatorPanel();
+  return new AltitudeSimulatorPanel(id);
 }
