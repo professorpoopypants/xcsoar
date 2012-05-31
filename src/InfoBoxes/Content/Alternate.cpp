@@ -22,6 +22,7 @@ Copyright_License {
 */
 
 #include "InfoBoxes/Content/Alternate.hpp"
+#include "InfoBoxes/Panel/Alternates.hpp"
 #include "InfoBoxes/Data.hpp"
 #include "Interface.hpp"
 #include "Components.hpp"
@@ -29,9 +30,33 @@ Copyright_License {
 #include "Engine/Util/Gradient.hpp"
 #include "Dialogs/Dialogs.h"
 #include "MainWindow.hpp"
+#include "Language/Language.hpp"
+#include "Util/Macros.hpp"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <tchar.h>
+
+static gcc_constexpr_data InfoBoxContentAlternate::PanelContent panels[] = {
+  InfoBoxContentAlternate::PanelContent (
+    N_("Edit"),
+    LoadAlternatesWidget),
+};
+
+const InfoBoxContentAlternate::DialogContent InfoBoxContentAlternate::dlgContent = {
+  ARRAY_SIZE(panels), &panels[0], false,
+};
+
+const InfoBoxContentAlternate::DialogContent*
+InfoBoxContentAlternate::GetDialogContent() {
+  return &dlgContent;
+}
+
+bool
+InfoBoxContentAlternate::HandleQuickAccess(const TCHAR *misc) {
+  index = (unsigned)_tcstol(misc, NULL, 0);
+  return true;
+}
 
 void
 InfoBoxContentAlternateName::Update(InfoBoxData &data)
@@ -76,26 +101,6 @@ InfoBoxContentAlternateName::Update(InfoBoxData &data)
   data.SetValueColor(alternate->solution.IsFinalGlide() ? 2 : 0);
 }
 
-bool
-InfoBoxContentAlternateName::HandleKey(const InfoBoxKeyCodes keycode)
-{
-  switch (keycode) {
-  case ibkEnter:
-    dlgAlternatesListShowModal(XCSoarInterface::main_window);
-    break;
-  case ibkLeft:
-  case ibkUp:
-    if (index > 0)
-      index--;
-    break;
-  case ibkRight:
-  case ibkDown:
-    index++;
-    break;
-  }
-
-  return true;
-}
 
 void
 InfoBoxContentAlternateGR::Update(InfoBoxData &data)
@@ -146,25 +151,4 @@ InfoBoxContentAlternateGR::Update(InfoBoxData &data)
 
   // Set Color (blue/black)
   data.SetValueColor(alternate->solution.IsFinalGlide() ? 2 : 0);
-}
-
-bool
-InfoBoxContentAlternateGR::HandleKey(const InfoBoxKeyCodes keycode)
-{
-  switch (keycode) {
-  case ibkEnter:
-    dlgAlternatesListShowModal(XCSoarInterface::main_window);
-    break;
-  case ibkLeft:
-  case ibkUp:
-    if (index > 0)
-      index--;
-    break;
-  case ibkRight:
-  case ibkDown:
-    index++;
-    break;
-  }
-
-  return true;
 }
