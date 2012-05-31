@@ -450,6 +450,7 @@ XCSOAR_SOURCES := \
 	$(SRC)/InfoBoxes/Panel/InfoBoxDescription.cpp \
 	$(SRC)/InfoBoxes/Panel/MacCreadyEdit.cpp \
 	$(SRC)/InfoBoxes/Panel/NextWaypoint.cpp \
+	$(SRC)/InfoBoxes/Panel/OnlineContest.cpp \
 	$(SRC)/InfoBoxes/Panel/TeamCode.cpp \
 	$(SRC)/InfoBoxes/Panel/WindEdit.cpp \
 	$(SRC)/Input/InputConfig.cpp \

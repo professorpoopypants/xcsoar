@@ -36,6 +36,7 @@ Copyright_License {
 #include "Language/Language.hpp"
 #include "UIGlobals.hpp"
 #include "InfoBoxes/Panel/NextWaypoint.hpp"
+#include "InfoBoxes/Panel/OnlineContest.hpp"
 #include "Util/Macros.hpp"
 
 #include <tchar.h>
@@ -524,23 +525,19 @@ InfoBoxContentOLC::Update(InfoBoxData &data)
   data.UnsafeFormatComment(_T("%.1f pts"), (double)result_olc.score);
 }
 
-bool
-InfoBoxContentOLC::HandleKey(const InfoBoxKeyCodes keycode)
-{
-  switch (keycode) {
-  case ibkEnter:
-    dlgAnalysisShowModal(UIGlobals::GetMainWindow(), UIGlobals::GetLook(),
-                         CommonInterface::Full(), *glide_computer,
-                         protected_task_manager,
-                         &airspace_database,
-                         terrain, 8);
-    return true;
+static gcc_constexpr_data InfoBoxContentOLC::PanelContent panels_olc[] = {
+  InfoBoxContentOLC::PanelContent (
+    N_("OLC"),
+    LoadOnlineContestPanel),
+};
 
-  default:
-    break;
-  }
+const InfoBoxContentOLC::DialogContent InfoBoxContentOLC::dlgContent = {
+  ARRAY_SIZE(panels), &panels_olc[0], false,
+};
 
-  return false;
+const InfoBoxContentOLC::DialogContent*
+InfoBoxContentOLC::GetDialogContent() {
+  return &dlgContent;
 }
 
 void
