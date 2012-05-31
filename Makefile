@@ -448,7 +448,6 @@ XCSOAR_SOURCES := \
 	$(SRC)/InfoBoxes/Panel/InfoBoxDescription.cpp \
 	$(SRC)/InfoBoxes/Panel/MacCreadyEdit.cpp \
 	$(SRC)/InfoBoxes/Panel/WindEdit.cpp \
-	$(SRC)/InfoBoxes/Panel/WindSetup.cpp \
 	$(SRC)/Input/InputConfig.cpp \
 	$(SRC)/Input/InputDefaults.cpp \
 	$(SRC)/Input/InputEvents.cpp \
