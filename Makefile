@@ -446,6 +446,7 @@ XCSOAR_SOURCES := \
 	$(SRC)/InfoBoxes/Panel/AltitudeSimulator.cpp \
 	$(SRC)/InfoBoxes/Panel/InfoBoxDescription.cpp \
 	$(SRC)/InfoBoxes/Panel/MacCreadyEdit.cpp \
+	$(SRC)/InfoBoxes/Panel/NextWaypoint.cpp \
 	$(SRC)/InfoBoxes/Panel/WindEdit.cpp \
 	$(SRC)/Input/InputConfig.cpp \
 	$(SRC)/Input/InputDefaults.cpp \

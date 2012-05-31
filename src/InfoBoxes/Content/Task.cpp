@@ -35,9 +35,27 @@ Copyright_License {
 #include "Formatter/TimeFormatter.hpp"
 #include "Language/Language.hpp"
 #include "UIGlobals.hpp"
+#include "InfoBoxes/Panel/NextWaypoint.hpp"
+#include "Util/Macros.hpp"
 
 #include <tchar.h>
 #include <stdio.h>
+
+
+static gcc_constexpr_data InfoBoxContentNextWaypoint::PanelContent panels[] = {
+  InfoBoxContentNextWaypoint::PanelContent (
+    N_("Task"),
+    LoadNextWaypointWidget),
+};
+
+const InfoBoxContentNextWaypoint::DialogContent InfoBoxContentNextWaypoint::dlgContent = {
+  ARRAY_SIZE(panels), &panels[0], false,
+};
+
+const InfoBoxContentNextWaypoint::DialogContent*
+InfoBoxContentNextWaypoint::GetDialogContent() {
+  return &dlgContent;
+}
 
 void
 InfoBoxContentBearing::Update(InfoBoxData &data)
@@ -113,34 +131,6 @@ InfoBoxContentNextWaypoint::Update(InfoBoxData &data)
 
   // Set Color (blue/black)
   data.SetValueColor(solution_remaining.IsFinalGlide() ? 2 : 0);
-}
-
-bool
-InfoBoxContentNextWaypoint::HandleKey(const InfoBoxKeyCodes keycode)
-{
-  if (protected_task_manager == NULL)
-    return false;
-
-  switch (keycode) {
-  case ibkRight:
-  case ibkUp:
-    protected_task_manager->IncrementActiveTaskPoint(1);
-    return true;
-
-  case ibkLeft:
-  case ibkDown:
-    protected_task_manager->IncrementActiveTaskPoint(-1);
-    return true;
-
-  case ibkEnter:
-    const Waypoint *wp = protected_task_manager->GetActiveWaypoint();
-    if (wp) {
-      dlgWaypointDetailsShowModal(UIGlobals::GetMainWindow(), *wp);
-      return true;
-    }
-  }
-
-  return false;
 }
 
 void
