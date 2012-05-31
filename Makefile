@@ -446,6 +446,7 @@ XCSOAR_SOURCES := \
 	$(SRC)/InfoBoxes/Panel/Barogram.cpp \
 	$(SRC)/InfoBoxes/Panel/Base.cpp \
 	$(SRC)/InfoBoxes/Panel/AltitudeSimulator.cpp \
+	$(SRC)/InfoBoxes/Panel/ForecastTemperature.cpp \
 	$(SRC)/InfoBoxes/Panel/InfoBoxDescription.cpp \
 	$(SRC)/InfoBoxes/Panel/MacCreadyEdit.cpp \
 	$(SRC)/InfoBoxes/Panel/NextWaypoint.cpp \

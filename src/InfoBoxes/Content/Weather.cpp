@@ -23,6 +23,7 @@ Copyright_License {
 
 #include "InfoBoxes/Content/Weather.hpp"
 #include "InfoBoxes/Panel/WindEdit.hpp"
+#include "InfoBoxes/Panel/ForecastTemperature.hpp"
 #include "InfoBoxes/Data.hpp"
 #include "Interface.hpp"
 #include "Dialogs/dlgInfoBoxAccess.hpp"
@@ -72,23 +73,20 @@ InfoBoxContentTemperatureForecast::Update(InfoBoxData &data)
   data.SetValueUnit(Units::current.temperature_unit);
 }
 
-bool
-InfoBoxContentTemperatureForecast::HandleKey(const InfoBoxKeyCodes keycode)
-{
-  switch(keycode) {
-  case ibkUp:
-    CommonInterface::SetComputerSettings().forecast_temperature += fixed_half;
-    return true;
 
-  case ibkDown:
-    CommonInterface::SetComputerSettings().forecast_temperature -= fixed_half;
-    return true;
+static gcc_constexpr_data InfoBoxContentTemperatureForecast::PanelContent panels_temp[] = {
+  InfoBoxContentTemperatureForecast::PanelContent (
+    N_("Edit"),
+    LoadForecastTemperaturePanel),
+};
 
-  default:
-    break;
-  }
+const InfoBoxContentTemperatureForecast::DialogContent InfoBoxContentTemperatureForecast::dlgContent = {
+  ARRAY_SIZE(panels_temp), &panels_temp[0], false,
+};
 
-  return false;
+const InfoBoxContentTemperatureForecast::DialogContent *
+InfoBoxContentTemperatureForecast::GetDialogContent() {
+  return &dlgContent;
 }
 
 /*

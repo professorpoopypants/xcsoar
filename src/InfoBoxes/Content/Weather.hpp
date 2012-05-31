@@ -25,6 +25,9 @@ Copyright_License {
 #define XCSOAR_INFOBOX_CONTENT_WEATHER_HPP
 
 #include "InfoBoxes/Content/Base.hpp"
+#include "Language/Language.hpp"
+#include "Util/Macros.hpp"
+#include "InfoBoxes/Panel/ForecastTemperature.hpp"
 
 class InfoBoxContentHumidity : public InfoBoxContent
 {
@@ -41,8 +44,10 @@ public:
 class InfoBoxContentTemperatureForecast : public InfoBoxContent
 {
 public:
+  virtual const DialogContent *GetDialogContent();
+
+  static const DialogContent dlgContent;
   virtual void Update(InfoBoxData &data);
-  virtual bool HandleKey(const InfoBoxKeyCodes keycode);
 };
 
 class InfoBoxContentWind : public InfoBoxContent
