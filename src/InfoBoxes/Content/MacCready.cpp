@@ -64,7 +64,7 @@ static gcc_constexpr_data InfoBoxContentMacCready::PanelContent panels[] = {
 };
 
 const InfoBoxContentMacCready::DialogContent InfoBoxContentMacCready::dlgContent = {
-  ARRAY_SIZE(panels), &panels[0],
+  ARRAY_SIZE(panels), &panels[0], true,
 };
 
 const InfoBoxContentMacCready::DialogContent*
