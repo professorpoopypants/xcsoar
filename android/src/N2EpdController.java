@@ -2,6 +2,7 @@ package org.xcsoar;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import android.util.Log;
 
 /**
  * Nook Touch EPD controller interface wrapper. This class is created by
@@ -12,6 +13,8 @@ import java.lang.reflect.Method;
  */
 public class N2EpdController
 {
+    private static final String TAG = "XCSoar N2Epd";
+
     public static int vCurrentNode = -2;
     public static int GL16_MODE = 4;
     // 0 - blink
@@ -31,7 +34,8 @@ public class N2EpdController
      * 6982): APP_3 W/System.err( 6982): APP_4
      */
     public static void exitA2Mode() {
-        System.err.println("XCSoar::exitA2Mode");
+        Log.d(TAG, "exitA2Mode");
+        Log.d(TAG, "previous vCurrentNode: " + vCurrentNode);
         vCurrentNode = 0;
         try {
             Class epdControllerClass = Class.forName("android.hardware.EpdController");
@@ -67,8 +71,8 @@ public class N2EpdController
     }
 
     public static void enterA2Mode() {
-        System.err.println("XCSoar::enterA2Mode");
-        System.err.println(vCurrentNode);
+        Log.d(TAG, "exitA2Mode");
+        Log.d(TAG, "previous vCurrentNode: " + vCurrentNode);
         try {
             Class epdControllerClass = Class.forName("android.hardware.EpdController");
             Class epdControllerRegionClass = Class.forName("android.hardware.EpdController$Region");
@@ -111,7 +115,8 @@ public class N2EpdController
     }
 
     public static void setGL16Mode(int reset) {
-//		System.err.println("XCSoar::setGL16Mode");
+        Log.d(TAG, "setGL16Mode");
+        Log.d(TAG, "reset: " + reset);
         try {
             /*
              * Loading the Epson EPD Controller Classes
@@ -187,8 +192,8 @@ public class N2EpdController
     }
 
     public static void setDUMode() {
-        System.err.println("XCSoar::setDUMode");
-        System.err.println(vCurrentNode);
+        Log.d(TAG, "setDUMode");
+        Log.d(TAG, "previous vCurrentNode: " + vCurrentNode);
         try {
             Class epdControllerClass = Class.forName("android.hardware.EpdController");
             Class epdControllerRegionClass = Class.forName("android.hardware.EpdController$Region");
