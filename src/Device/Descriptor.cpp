@@ -49,6 +49,9 @@ Copyright_License {
 #include "Java/Global.hpp"
 #include "Android/InternalSensors.hpp"
 #include "Android/Main.hpp"
+#ifdef NOOK
+#include "Android/Nook.hpp"
+#endif
 #endif
 
 #include <assert.h>
@@ -251,6 +254,10 @@ DeviceDescriptor::Open(OperationEnvironment &env)
   if (is_simulator() || !config.IsAvailable())
     return;
 
+#ifdef NOOK
+    Nook::InitUsb();
+#endif
+
   CancelAsync();
 
   assert(!IsOccupied());
@@ -273,6 +280,10 @@ DeviceDescriptor::Close()
 #ifdef ANDROID
   delete internal_sensors;
   internal_sensors = NULL;
+#ifdef NOOK
+  if (port != NULL)
+    Nook::DeinitUsb();
+#endif
 #endif
 
   delete device;
