@@ -71,7 +71,7 @@ public class N2EpdController
     }
 
     public static void enterA2Mode() {
-        Log.d(TAG, "exitA2Mode");
+        Log.d(TAG, "enterA2Mode");
         Log.d(TAG, "previous vCurrentNode: " + vCurrentNode);
         try {
             Class epdControllerClass = Class.forName("android.hardware.EpdController");
