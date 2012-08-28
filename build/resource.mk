@@ -105,7 +105,7 @@ BMP_LAUNCH_DLL_FLY_224 = $(PNG_LAUNCH_224:.png=_dll_1.bmp)
 BMP_LAUNCH_DLL_SIM_224 = $(PNG_LAUNCH_224:.png=_dll_2.bmp)
 
 # render from SVG to PNG
-$(eval $(call rsvg-convert,$(PNG_LAUNCH_224),$(DATA)/graphics/%_224.png,Data/graphics/%.svg,--width=224))
+$(eval $(call rsvg-convert,$(PNG_LAUNCH_224),$(DATA)/graphics/%_224.png,Data/graphics/%.svg,--width=896))
 
 # split into two uncompressed 8-bit BMPs (single 'convert' operation)
 $(eval $(call convert-to-bmp-half,$(BMP_LAUNCH_FLY_224),%_1.bmp,%.png,-background white))
