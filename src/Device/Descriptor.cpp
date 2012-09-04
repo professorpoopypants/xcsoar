@@ -202,6 +202,9 @@ DeviceDescriptor::OpenInternalSensors()
 #ifdef ANDROID
   if (is_simulator())
     return true;
+#ifdef NOOK
+  return false;
+#endif
 
   internal_sensors =
       InternalSensors::create(Java::GetEnv(), context, GetIndex());
