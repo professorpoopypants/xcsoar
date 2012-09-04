@@ -22,7 +22,8 @@ Copyright_License {
 */
 
 #include "Android/Nook.hpp"
-#include "Simulator.hpp"
+#include "PeriodClock.hpp"
+
 #include <stdlib.h>
 
 static char cmd_sleep[] = "sleep 1";
@@ -32,12 +33,26 @@ static char cmd_usb_rw[] = "su -c 'chmod 666 /dev/ttyUSB0'";
 static char cmd_usb_ro[] = "su -c 'chmod 500 /dev/ttyUSB0'";
 static char cmd_init_date[] = "date > /sdcard/initusbdate";
 static char cmd_deinit_date[] = "date > /sdcard/deinitusbdate";
+static char cmd_set_charge_500[] = "su -c 'echo 500000 > /sys/devices/platform/bq24073/regulator/regulator.5/device/force_current'";
+static PeriodClock init_clock;
+static PeriodClock deinit_clock;
+
+/**
+ * sets max charge to 500mA.  any higher breaks the USB
+ */
+static void
+SetCharge500()
+{
+  system(cmd_set_charge_500);
+}
 
 void
 Nook::InitUsb()
 {
-  if (is_simulator())
+  if (!init_clock.CheckUpdate(5000))
     return;
+
+  SetCharge500();
 
   system(cmd_host);
   system(cmd_sleep);
@@ -46,13 +61,19 @@ Nook::InitUsb()
   system(cmd_sleep);
 
   system(cmd_usb_rw);
+  system(cmd_sleep);
+  system(cmd_usb_rw);
+
   system(cmd_init_date);
+
+  // next to to InitUsb() should go through
+  deinit_clock.Reset();
 }
 
 void
 Nook::DeinitUsb()
 {
-  if (is_simulator())
+  if (!deinit_clock.CheckUpdate(5000))
     return;
 
   system(cmd_peripheral);
@@ -63,4 +84,7 @@ Nook::DeinitUsb()
 
   system(cmd_usb_ro);
   system(cmd_deinit_date);
+
+  // next to to InitUsb() should go through
+  init_clock.Reset();
 }
