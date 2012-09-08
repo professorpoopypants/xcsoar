@@ -29,6 +29,7 @@ Copyright_License {
 #include "Screen/OpenGL/Features.hpp"
 #include "Screen/OpenGL/Shapes.hpp"
 #include "FBO.hpp"
+#include "Asset.hpp"
 
 #ifdef ANDROID
 #include "Android/Main.hpp"
@@ -141,11 +142,10 @@ OpenGL::SetupContext()
   frame_buffer_object = CheckFBO() && FBO::Initialise();
 
   glDisable(GL_DEPTH_TEST);
-#ifdef NOOK
-  glEnable(GL_DITHER);
-#else
-  glDisable(GL_DITHER);
-#endif
+  if (IsNookSimpleTouch())
+    glEnable(GL_DITHER);
+  else
+    glDisable(GL_DITHER);
   glDisable(GL_LIGHTING);
 
   glEnableClientState(GL_VERTEX_ARRAY);

@@ -24,6 +24,7 @@ Copyright_License {
 #include "WaypointLook.hpp"
 #include "Renderer/WaypointRendererSettings.hpp"
 #include "resource.h"
+#include "Asset.hpp"
 
 void
 WaypointLook::Initialise(const WaypointRendererSettings &settings)
@@ -39,13 +40,13 @@ WaypointLook::Initialise(const WaypointRendererSettings &settings)
   power_plant_icon.Load(IDB_POWER_PLANT, IDB_POWER_PLANT_HD);
   obstacle_icon.Load(IDB_OBSTACLE, IDB_OBSTACLE_HD);
 
-#ifdef NOOK
-  reachable_brush.Set(COLOR_WHITE);
-  terrain_unreachable_brush.Set(LightColor(COLOR_BLACK));
-#else
-  reachable_brush.Set(COLOR_GREEN);
-  terrain_unreachable_brush.Set(LightColor(COLOR_RED));
-#endif
+  if (IsNookSimpleTouch()) {
+    reachable_brush.Set(COLOR_WHITE);
+    terrain_unreachable_brush.Set(LightColor(COLOR_BLACK));
+  } else {
+    reachable_brush.Set(COLOR_GREEN);
+    terrain_unreachable_brush.Set(LightColor(COLOR_RED));
+  }
   unreachable_brush.Set(COLOR_RED);
   white_brush.Set(COLOR_WHITE);
   light_gray_brush.Set(COLOR_LIGHT_GRAY);

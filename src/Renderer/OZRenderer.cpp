@@ -35,6 +35,7 @@ Copyright_License {
 #include "Screen/Layout.hpp"
 #include "Look/TaskLook.hpp"
 #include "Look/AirspaceLook.hpp"
+#include "Asset.hpp"
 
 OZRenderer::OZRenderer(const TaskLook &_task_look,
                        const AirspaceLook &_airspace_look,
@@ -49,10 +50,10 @@ OZRenderer::Prepare(Canvas &canvas, Layer layer, int offset) const
   if (layer == LAYER_SHADE) {
     Color color = settings.classes[AATASK].fill_color;
 #ifdef ENABLE_OPENGL
-#ifndef NOOK
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#endif
+    if (!IsNookSimpleTouch()) {
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
 
     canvas.Select(Brush(color.WithAlpha(64)));
 #elif defined(USE_GDI)
@@ -87,9 +88,8 @@ OZRenderer::Finish(Canvas &canvas, Layer layer) const
 {
   if (layer == LAYER_SHADE) {
 #ifdef ENABLE_OPENGL
-#ifndef NOOK
-    glDisable(GL_BLEND);
-#endif
+    if (!IsNookSimpleTouch())
+      glDisable(GL_BLEND);
 #elif defined(USE_GDI)
     canvas.SetMixCopy();
 #endif /* GDI */

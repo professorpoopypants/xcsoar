@@ -798,7 +798,8 @@ XCSOAR_SOURCES += \
 	$(SRC)/Android/Vibrator.cpp \
 	$(SRC)/Android/Context.cpp \
 	$(SRC)/Android/LogCat.cpp \
-	$(SRC)/Android/Main.cpp
+	$(SRC)/Android/Main.cpp \
+	$(SRC)/Android/Nook.cpp
 ifneq ($(IOIOLIB_DIR),)
 XCSOAR_SOURCES += \
 	$(SRC)/Device/Port/AndroidIOIOUartPort.cpp \
@@ -840,10 +841,6 @@ endif
 
 ifeq ($(HAVE_PCM_PLAYER),y)
 XCSOAR_SOURCES += $(SRC)/Audio/VarioGlue.cpp
-endif
-
-ifeq ($(NOOK),y)
-XCSOAR_SOURCES += $(SRC)/Android/Nook.cpp
 endif
 
 XCSOAR_LDADD = \

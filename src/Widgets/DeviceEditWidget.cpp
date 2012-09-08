@@ -31,6 +31,7 @@
 #include "Form/DataField/Boolean.hpp"
 #include "Device/Register.hpp"
 #include "Device/Driver.hpp"
+#include "Asset.hpp"
 
 #ifdef _WIN32_WCE
 #include "Device/Windows/Enumerator.hpp"
@@ -42,9 +43,7 @@
 #ifdef IOIOLIB
 #include "Device/Port/AndroidIOIOUartPort.hpp"
 #endif
-#ifdef NOOK
 #include "Android/Nook.hpp"
-#endif
 #endif
 
 enum ControlIndex {
@@ -66,10 +65,8 @@ static constexpr struct {
   { DeviceConfig::PortType::AUTO, N_("GPS Intermediate Driver") },
 #endif
 #ifdef ANDROID
-#ifndef NOOK
   { DeviceConfig::PortType::INTERNAL, N_("Built-in GPS & sensors") },
   { DeviceConfig::PortType::RFCOMM_SERVER, N_("Bluetooth server") },
-#endif
 #endif
 
   /* label not translated for now, until we have a TCP/UDP port
@@ -110,9 +107,8 @@ DetectSerialPorts(DataFieldEnum &df)
 
   unsigned sort_start = df.Count();
 
-#ifdef NOOK
-  Nook::InitUsb();
-#endif
+  if (IsNookSimpleTouch())
+    Nook::InitUsb();
 
   bool found = false;
   struct dirent *ent;

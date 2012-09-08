@@ -60,11 +60,11 @@ GetAirspaceColor(unsigned i, Color &color)
     return false;
 
   // Adjust index if the user has configured a preset color out of range
-  if (index >= ARRAY_SIZE(AirspaceLook::preset_colors))
+  if (index >= AirspaceLook::GetPresetColorsSize())
     index = 0;
 
   // Assign configured preset color
-  color = AirspaceLook::preset_colors[index];
+  color = AirspaceLook::GetPresetColors()[index];
   return true;
 }
 

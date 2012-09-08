@@ -43,15 +43,14 @@ Copyright_License {
 #include "Input/InputQueue.hpp"
 #include "LogFile.hpp"
 #include "Job/Job.hpp"
+#include "Asset.hpp"
 
 #ifdef ANDROID
 #include "Java/Object.hpp"
 #include "Java/Global.hpp"
 #include "Android/InternalSensors.hpp"
 #include "Android/Main.hpp"
-#ifdef NOOK
 #include "Android/Nook.hpp"
-#endif
 #endif
 
 #include <assert.h>
@@ -202,9 +201,8 @@ DeviceDescriptor::OpenInternalSensors()
 #ifdef ANDROID
   if (is_simulator())
     return true;
-#ifdef NOOK
-  return false;
-#endif
+  if (IsNookSimpleTouch())
+    return false;
 
   internal_sensors =
       InternalSensors::create(Java::GetEnv(), context, GetIndex());
@@ -257,9 +255,8 @@ DeviceDescriptor::Open(OperationEnvironment &env)
   if (is_simulator() || !config.IsAvailable())
     return;
 
-#ifdef NOOK
+  if (IsNookSimpleTouch())
     Nook::InitUsb();
-#endif
 
   CancelAsync();
 
@@ -283,10 +280,8 @@ DeviceDescriptor::Close()
 #ifdef ANDROID
   delete internal_sensors;
   internal_sensors = NULL;
-#ifdef NOOK
-  if (port != NULL)
+  if (IsNookSimpleTouch() && port != NULL)
     Nook::DeinitUsb();
-#endif
 #endif
 
   delete device;

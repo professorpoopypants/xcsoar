@@ -23,19 +23,20 @@ Copyright_License {
 
 #include "ThermalBandLook.hpp"
 #include "Screen/Layout.hpp"
+#include "Asset.hpp"
 
 void
 ThermalBandLook::Initialise(bool _inverse, Color sky_color)
 {
   inverse = _inverse;
 
-#ifdef NOOK
-  brush.Set(COLOR_GRAY);
-  pen.Set(Layout::ScalePenWidth(1), COLOR_DARK_GRAY);
-#else
-  brush.Set(sky_color);
-  pen.Set(Layout::ScalePenWidth(1), DarkColor(sky_color));
-#endif
+  if (IsNookSimpleTouch())  {
+    brush.Set(COLOR_GRAY);
+    pen.Set(Layout::ScalePenWidth(1), COLOR_DARK_GRAY);
+  } else {
+    brush.Set(sky_color);
+    pen.Set(Layout::ScalePenWidth(1), DarkColor(sky_color));
+  }
 
   white_pen.Set(2, COLOR_WHITE);
   black_pen.Set(2, COLOR_BLACK);

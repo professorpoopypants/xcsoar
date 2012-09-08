@@ -349,9 +349,8 @@ RasterRenderer::ColorTable(const ColorRamp *color_ramp, bool do_water,
         g = color.Green();
         b = color.Blue();
 
-#ifndef NOOK
-        TerrainShading(mag, r, g, b);
-#endif
+        if (!IsNookSimpleTouch())
+          TerrainShading(mag, r, g, b);
       }
 
       color_table[i + (mag + 64) * 256] = BGRColor(r, g, b);

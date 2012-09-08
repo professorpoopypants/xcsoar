@@ -25,6 +25,7 @@
 #include "MapSettings.hpp"
 #include "Screen/Ramp.hpp"
 #include "Screen/Layout.hpp"
+#include "Asset.hpp"
 
 static Color
 GetVario1Color(short ramp_h) {
@@ -40,22 +41,25 @@ GetVario1Color(short ramp_h) {
 static Color
 GetVario2Color(short ramp_h) {
   static constexpr ColorRamp snail_colors_vario2[] = {
-#ifdef NOOK
+    {0,   0x00, 0x00, 0xff},
+    {99,  0x00, 0xff, 0xff},
+    {100, 0xff, 0xff, 0x00},
+    {200, 0xff, 0x00, 0x00}
+  };
+
+  static constexpr ColorRamp snail_colors_vario2_gray[] = {
     {0,   0, 0, 0},
     {74,  0, 0, 0},
     {75, 238, 238, 238},
     {124, 238, 238, 238},
     {125, 237, 237, 237},
     {200, 237, 237, 237}
-#else
-    {0,   0x00, 0x00, 0xff},
-    {99,  0x00, 0xff, 0xff},
-    {100, 0xff, 0xff, 0x00},
-    {200, 0xff, 0x00, 0x00}
-#endif
   };
 
-  return ColorRampLookup(ramp_h, snail_colors_vario2, 4);
+  if (HasColors())
+    return ColorRampLookup(ramp_h, snail_colors_vario2, 4);
+  else
+    return ColorRampLookup(ramp_h, snail_colors_vario2_gray, 4);
 }
 
 static Color

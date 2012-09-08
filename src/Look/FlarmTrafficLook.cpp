@@ -25,6 +25,7 @@
 #include "Look/TrafficLook.hpp"
 #include "Screen/Layout.hpp"
 #include "Screen/Fonts.hpp"
+#include "Asset.hpp"
 
 void
 FlarmTrafficLook::Initialise(const TrafficLook &other, bool small)
@@ -32,15 +33,15 @@ FlarmTrafficLook::Initialise(const TrafficLook &other, bool small)
   passive_color = Color(0x99, 0x99, 0x99);
   warning_color = other.warning_color;
   alarm_color = other.alarm_color;
-#ifdef NOOK
-  default_color = COLOR_GRAY;
-  selection_color = COLOR_DARK_GRAY;
-  radar_color = COLOR_BLACK;
-#else
-  default_color = COLOR_BLACK;
-  selection_color = COLOR_BLUE;
-  radar_color = COLOR_LIGHT_GRAY;
-#endif
+  if (IsNookSimpleTouch()) {
+    default_color = COLOR_GRAY;
+    selection_color = COLOR_DARK_GRAY;
+    radar_color = COLOR_BLACK;
+  } else {
+    default_color = COLOR_BLACK;
+    selection_color = COLOR_BLUE;
+    radar_color = COLOR_LIGHT_GRAY;
+  }
   background_color = COLOR_WHITE;
   Color team_color_green = Color(0x74, 0xFF, 0);
   Color team_color_blue = Color(0, 0x90, 0xFF);

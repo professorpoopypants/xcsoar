@@ -188,8 +188,11 @@ static inline bool
 IsNookSimpleTouch()
 {
 #if defined(ANDROID)
-  assert(native_view);
   static int cached_type = -1;
+  if (native_view == NULL)
+    return false;
+
+  assert(native_view);
   if (cached_type == -1) {
     if (_tcscmp(native_view->GetProduct(), _T("NOOK")) == 0)
       cached_type = 1;

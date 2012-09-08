@@ -26,6 +26,7 @@ Copyright_License {
 #include "Geo/GeoClip.hpp"
 #include "Screen/Icon.hpp"
 #include "Task/ProtectedRoutePlanner.hpp"
+#include "Asset.hpp"
 
 #ifdef ENABLE_OPENGL
 #include "Screen/OpenGL/Triangulate.hpp"
@@ -303,16 +304,15 @@ MapWindow::DrawTerrainAbove(Canvas &canvas)
     glStencilFunc(GL_NOTEQUAL, 1, 1);
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-#ifndef NOOK
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#endif
+    if (!IsNookSimpleTouch()) {
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
 
     canvas.Clear(Color(255, 255, 255, 77));
 
-#ifndef NOOK
-    glDisable(GL_BLEND);
-#endif
+    if (!IsNookSimpleTouch())
+      glDisable(GL_BLEND);
     glDisable(GL_STENCIL_TEST);
 
 #elif defined(USE_GDI)
