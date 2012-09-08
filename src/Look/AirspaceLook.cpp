@@ -31,8 +31,7 @@ Copyright_License {
 #include "Screen/GDI/AlphaBlend.hpp"
 #endif
 
-const Color AirspaceLook::preset_colors[] = {
-#ifndef NOOK
+const Color AirspaceLook::preset_colors_color[] = {
   COLOR_RED,
   COLOR_GREEN,
   COLOR_BLUE,
@@ -45,7 +44,8 @@ const Color AirspaceLook::preset_colors[] = {
   DarkColor(COLOR_YELLOW),
   DarkColor(COLOR_MAGENTA),
   DarkColor(COLOR_CYAN),
-#else
+};
+  const Color AirspaceLook::preset_colors_gray[] = {
   COLOR_WHITE,
   Color(255,255,214),
   Color(255,255,205),
@@ -55,8 +55,16 @@ const Color AirspaceLook::preset_colors[] = {
   Color(255,255,201),
   Color(255,255,200),
   COLOR_BLACK,
-#endif
 };
+
+const Color*
+AirspaceLook::GetPresetColors()
+{
+  if (HasColors())
+    return preset_colors_color;
+  else
+    return preset_colors_gray;
+}
 
 void
 AirspaceLook::Initialise(const AirspaceRendererSettings &settings)

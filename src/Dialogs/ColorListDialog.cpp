@@ -34,9 +34,10 @@ Copyright_License {
 static void
 OnPaintListItem(Canvas &canvas, const PixelRect rc, unsigned i)
 {
-  assert(i < ARRAY_SIZE(AirspaceLook::preset_colors));
 
-  const Color &color = AirspaceLook::preset_colors[i];
+  assert(i < AirspaceLook::GetPresetColorsSize());
+
+  const Color &color = AirspaceLook::GetPresetColors()[i];
 
   PixelRect rc2 = rc;
   InflateRect(&rc2, -Layout::FastScale(2), -Layout::FastScale(2));
@@ -57,19 +58,19 @@ bool
 ShowColorListDialog(Color &color)
 {
   unsigned default_index = 0;
-  for (unsigned i = 1; i < ARRAY_SIZE(AirspaceLook::preset_colors); ++i)
-    if (AirspaceLook::preset_colors[i] == color)
+  for (unsigned i = 1; i < AirspaceLook::GetPresetColorsSize(); ++i)
+    if (AirspaceLook::GetPresetColors()[i] == color)
       default_index = i;
 
   int index = ListPicker(UIGlobals::GetMainWindow(), _("Select Color"),
-                         ARRAY_SIZE(AirspaceLook::preset_colors), default_index,
+                         AirspaceLook::GetPresetColorsSize(), default_index,
                          Layout::FastScale(18), OnPaintListItem);
 
   if (index < 0)
     return false;
 
-  assert((unsigned)index < ARRAY_SIZE(AirspaceLook::preset_colors));
+  assert((unsigned)index < AirspaceLook::GetPresetColorsSize());
 
-  color = AirspaceLook::preset_colors[index];
+  color = AirspaceLook::GetPresetColors()[index];
   return true;
 }

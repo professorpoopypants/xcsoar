@@ -29,18 +29,20 @@ Copyright_License {
 #include "Screen/Icon.hpp"
 #include "Screen/Features.hpp"
 #include "Engine/Airspace/AirspaceClass.hpp"
+#include "Asset.hpp"
 
-#ifdef NOOK
-#define NUMAIRSPACECOLORS  9
-#else
-#define NUMAIRSPACECOLORS 16
-#endif
+#define NUMAIRSPACECOLORSGRAY  9
+#define NUMAIRSPACECOLORSCOLOR 16
 #define NUMAIRSPACEBRUSHES 8
+
 
 struct AirspaceRendererSettings;
 
 struct AirspaceLook {
-  static const Color preset_colors[NUMAIRSPACECOLORS];
+
+  static const Color preset_colors_color[NUMAIRSPACECOLORSCOLOR];
+  static const Color preset_colors_gray[NUMAIRSPACECOLORSGRAY];
+
 
 #if defined(HAVE_ALPHA_BLEND) || !defined(HAVE_HATCHED_BRUSH)
   /**
@@ -61,6 +63,9 @@ struct AirspaceLook {
   MaskedIcon intercept_icon;
 
   void Initialise(const AirspaceRendererSettings &settings);
+  static const Color* GetPresetColors();
+  static unsigned GetPresetColorsSize() { return HasColors() ?
+      NUMAIRSPACECOLORSCOLOR : NUMAIRSPACECOLORSGRAY; }
 };
 
 #endif
