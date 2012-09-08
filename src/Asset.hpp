@@ -267,11 +267,10 @@ HasKeyboard()
  *
  * XXX not yet implemented!
  */
-constexpr
 static inline bool
 HasColors()
 {
-  return true;
+  return !IsNookSimpleTouch();
 }
 
 #endif
