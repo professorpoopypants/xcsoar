@@ -79,8 +79,10 @@ AirspacePreviewRenderer::PrepareFill(
     return false;
 
 #ifdef ENABLE_OPENGL
-  ::glEnable(GL_BLEND);
-  ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  if (!IsNookSimpleTouch()) {
+    ::glEnable(GL_BLEND);
+    ::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  }
 
   Color color = class_settings.fill_color;
   canvas.Select(Brush(color.WithAlpha(48)));
@@ -103,7 +105,8 @@ void
 AirspacePreviewRenderer::UnprepareFill(Canvas &canvas)
 {
 #ifdef ENABLE_OPENGL
-  ::glDisable(GL_BLEND);
+  if (!IsNookSimpleTouch())
+    ::glDisable(GL_BLEND);
 #elif defined(USE_GDI)
   canvas.SetMixCopy();
 #endif
