@@ -341,8 +341,8 @@ NextWaypointWidget::OnPaintItem(Canvas &canvas, const PixelRect rc, unsigned i)
 
   // Use small font for details
   canvas.Select(small_font);
-  canvas.SetTextColor(COLOR_BLACK);
-
+  canvas.SetTextColor(dialog_look.list.GetTextColor(list->GetCursorIndex() == i,
+                                                    list->HasFocus(), false));
   UPixelScalar leg_info_width = 0;
   if (show_leg_info) {
     // Draw leg distance
