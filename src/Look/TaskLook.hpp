@@ -52,7 +52,7 @@ struct TaskLook {
    */
   Brush hbGray, hbGreen, hbOrange, hbLightGray, hbNotReachableTerrain;
 
-  void Initialise();
+  void Initialise(const ColorTheme &color_theme);
 };
 
 #endif

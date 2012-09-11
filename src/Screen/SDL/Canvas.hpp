@@ -343,7 +343,7 @@ public:
 
   void DrawFocusRectangle(PixelRect rc) {
     DrawOutlineRectangle(rc.left, rc.top, rc.right, rc.bottom,
-                      COLOR_DARK_GRAY);
+                      color_theme->dark_gray);
   }
 
   void DrawButton(PixelRect rc, bool down);

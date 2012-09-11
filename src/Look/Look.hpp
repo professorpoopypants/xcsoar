@@ -65,8 +65,9 @@ struct Look {
   ThermalAssistantLook thermal_assistant_gauge;
   ThermalAssistantLook thermal_assistant_dialog;
 
-  void Initialise();
-  void InitialiseConfigured(const UISettings &settings);
+  void Initialise(const ColorTheme &color_theme);
+  void InitialiseConfigured(const UISettings &settings,
+                            const ColorTheme &color_theme);
 };
 
 #endif

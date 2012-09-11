@@ -25,7 +25,7 @@ Copyright_License {
 #include "Screen/Layout.hpp"
 
 void
-HorizonLook::Initialise()
+HorizonLook::Initialise(const ColorTheme &color_theme)
 {
   aircraft_pen.Set(Layout::Scale(2), COLOR_BLACK);
 

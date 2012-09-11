@@ -28,19 +28,20 @@
 #include "Asset.hpp"
 
 void
-FlarmTrafficLook::Initialise(const TrafficLook &other, bool small)
+FlarmTrafficLook::Initialise(const TrafficLook &other, bool small,
+                             const ColorTheme &color_theme)
 {
   passive_color = Color(0x99, 0x99, 0x99);
   warning_color = other.warning_color;
   alarm_color = other.alarm_color;
   if (IsNookSimpleTouch()) {
-    default_color = COLOR_GRAY;
-    selection_color = COLOR_DARK_GRAY;
+    default_color = color_theme.gray;
+    selection_color = color_theme.dark_gray;
     radar_color = COLOR_BLACK;
   } else {
     default_color = COLOR_BLACK;
-    selection_color = COLOR_BLUE;
-    radar_color = COLOR_LIGHT_GRAY;
+    selection_color = color_theme.blue;
+    radar_color = color_theme.light_gray;
   }
   background_color = COLOR_WHITE;
   Color team_color_green = Color(0x74, 0xFF, 0);

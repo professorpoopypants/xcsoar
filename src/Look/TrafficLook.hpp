@@ -45,7 +45,7 @@ struct TrafficLook {
 
   MaskedIcon teammate_icon;
 
-  void Initialise();
+  void Initialise(const ColorTheme &color_theme);
 };
 
 #endif

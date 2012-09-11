@@ -28,13 +28,15 @@ Copyright_License {
 #include "resource.h"
 #include "Asset.hpp"
 #include "Util/Macros.hpp"
+#include "Look/DialogLook.hpp"
 
 #include <assert.h>
 
 using std::min;
 
-ScrollBar::ScrollBar()
-  :dragging(false)
+ScrollBar::ScrollBar(const DialogLook &_look)
+  :dragging(false),
+   look(_look)
 {
   // Reset the ScrollBar on creation
   Reset();
@@ -200,11 +202,13 @@ ScrollBar::Paint(Canvas &canvas) const
   // fill the rest with darker gray
   if (up_arrow_rect.bottom + 1 < rc_slider.top)
     canvas.DrawFilledRectangle(rc.left + 1, up_arrow_rect.bottom + 1,
-                               rc.right, rc_slider.top, COLOR_GRAY);
+                               rc.right, rc_slider.top,
+                               color_theme->gray);
 
   if (rc_slider.bottom < down_arrow_rect.top)
     canvas.DrawFilledRectangle(rc.left + 1, rc_slider.bottom,
-                               rc.right, down_arrow_rect.top, COLOR_GRAY);
+                               rc.right, down_arrow_rect.top,
+                               color_theme->gray);
 }
 
 void

@@ -57,8 +57,14 @@ struct ChartLook {
    */
   const Font *axis_value_font;
 
+  /**
+   * Holds color theme that can be used externally.
+   */
+  const ColorTheme *color_theme;
+
   void Initialise(const Font &label_font,
-                  const Font &axis_label_font, const Font &axis_value_font);
+                  const Font &axis_label_font, const Font &axis_value_font,
+                  const ColorTheme &color_theme);
 
   const Pen &GetPen(Style style) const {
     unsigned i = (unsigned)style;

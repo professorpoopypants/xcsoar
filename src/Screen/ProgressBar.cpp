@@ -152,7 +152,7 @@ ProgressBar::OnPaint(Canvas &canvas)
   canvas.DrawRoundRectangle(margin, margin, margin + position,
                             GetHeight() - margin, GetHeight(), GetHeight());
 #else
-  canvas.DrawFilledRectangle(0, 0, position, GetHeight(), COLOR_GREEN);
+  canvas.DrawFilledRectangle(0, 0, position, GetHeight(), color_theme->green);
   canvas.DrawFilledRectangle(position, 0, GetWidth(), GetHeight(), COLOR_WHITE);
 #endif
 }

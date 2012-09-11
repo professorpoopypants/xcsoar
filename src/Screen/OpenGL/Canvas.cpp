@@ -460,7 +460,7 @@ Canvas::DrawKeyhole(PixelScalar x, PixelScalar y,
 void
 Canvas::DrawFocusRectangle(PixelRect rc)
 {
-  DrawOutlineRectangle(rc.left, rc.top, rc.right, rc.bottom, COLOR_DARK_GRAY);
+  DrawOutlineRectangle(rc.left, rc.top, rc.right, rc.bottom, color_theme->dark_gray);
 }
 
 void

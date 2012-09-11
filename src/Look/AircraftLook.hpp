@@ -35,7 +35,7 @@ struct AircraftLook {
   Pen canopy_pen;
   Brush canopy_brush;
 
-  void Initialise();
+  void Initialise(const ColorTheme &color_theme);
 };
 
 #endif

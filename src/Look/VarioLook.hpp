@@ -50,7 +50,8 @@ struct VarioLook {
   const Font *text_font, *value_font;
 
   void Initialise(bool inverse, bool colors,
-                  const Font &text_font, const Font &value_font);
+                  const Font &text_font, const Font &value_font,
+                  const ColorTheme &color_theme);
 };
 
 #endif

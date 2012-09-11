@@ -34,7 +34,7 @@ struct TraceHistoryLook {
 
   Pen line_pen;
 
-  void Initialise(bool inverse);
+  void Initialise(bool inverse, const ColorTheme &color_theme);
 };
 
 #endif

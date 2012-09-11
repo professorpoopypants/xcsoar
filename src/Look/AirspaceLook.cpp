@@ -31,31 +31,8 @@ Copyright_License {
 #include "Screen/GDI/AlphaBlend.hpp"
 #endif
 
-const Color AirspaceLook::preset_colors_color[] = {
-  COLOR_RED,
-  COLOR_GREEN,
-  COLOR_BLUE,
-  COLOR_YELLOW,
-  COLOR_MAGENTA,
-  COLOR_CYAN,
-  DarkColor(COLOR_RED),
-  DarkColor(COLOR_GREEN),
-  DarkColor(COLOR_BLUE),
-  DarkColor(COLOR_YELLOW),
-  DarkColor(COLOR_MAGENTA),
-  DarkColor(COLOR_CYAN),
-};
-  const Color AirspaceLook::preset_colors_gray[] = {
-  COLOR_WHITE,
-  Color(255,255,214),
-  Color(255,255,205),
-  Color(255,255,204),
-  Color(255,255,203),
-  Color(255,255,202),
-  Color(255,255,201),
-  Color(255,255,200),
-  COLOR_BLACK,
-};
+Color AirspaceLook::preset_colors_color[];
+Color AirspaceLook::preset_colors_gray[];
 
 const Color*
 AirspaceLook::GetPresetColors()
@@ -67,8 +44,37 @@ AirspaceLook::GetPresetColors()
 }
 
 void
-AirspaceLook::Initialise(const AirspaceRendererSettings &settings)
+AirspaceLook::Initialise(const AirspaceRendererSettings &settings,
+                         const ColorTheme &color_theme)
 {
+  preset_colors_color[0] = color_theme.red;
+  preset_colors_color[1] = color_theme.green;
+  preset_colors_color[2] = color_theme.blue;
+  preset_colors_color[3] = color_theme.yellow;
+  preset_colors_color[4] = color_theme.magenta;
+  preset_colors_color[5] = color_theme.cyan;
+  preset_colors_color[6] = DarkColor(color_theme.red);
+  preset_colors_color[7] = DarkColor(color_theme.green);
+  preset_colors_color[8] = DarkColor(color_theme.blue);
+  preset_colors_color[9] = DarkColor(color_theme.yellow);
+  preset_colors_color[10] = DarkColor(color_theme.magenta);
+  preset_colors_color[11] = DarkColor(color_theme.cyan);
+  preset_colors_color[12] = COLOR_WHITE;
+  preset_colors_color[13] = color_theme.light_gray;
+  preset_colors_color[14] = color_theme.gray;
+  preset_colors_color[15] = COLOR_BLACK;
+
+  preset_colors_gray[0] = COLOR_WHITE;
+  preset_colors_gray[1] = Color(255,255,214);
+  preset_colors_gray[2] = Color(255,255,205);
+  preset_colors_gray[3] = Color(255,255,204);
+  preset_colors_gray[4] = Color(255,255,203);
+  preset_colors_gray[5] = Color(255,255,202);
+  preset_colors_gray[6] = Color(255,255,201);
+  preset_colors_gray[7] = Color(255,255,200);
+  preset_colors_gray[8] = COLOR_BLACK;
+
+
   for (unsigned i = 0; i < AIRSPACECLASSCOUNT; ++i) {
     const AirspaceClassRendererSettings &class_settings = settings.classes[i];
 

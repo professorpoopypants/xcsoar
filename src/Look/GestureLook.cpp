@@ -25,9 +25,9 @@ Copyright_License {
 #include "Screen/Layout.hpp"
 
 void
-GestureLook::Initialise()
+GestureLook::Initialise(const ColorTheme &color_theme)
 {
-  color = COLOR_RED;
+  color = color_theme.red;
   pen.Set(Layout::ScalePenWidth(5), color);
 
   invalid_color = LightColor(color);

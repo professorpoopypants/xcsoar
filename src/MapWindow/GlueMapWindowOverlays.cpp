@@ -43,6 +43,7 @@ Copyright_License {
 #include "Util/Macros.hpp"
 #include "Look/GestureLook.hpp"
 #include "Input/InputEvents.hpp"
+#include "Components.hpp"
 
 #include <stdio.h>
 
@@ -70,7 +71,7 @@ GlueMapWindow::DrawGesture(Canvas &canvas) const
 void
 GlueMapWindow::DrawCrossHairs(Canvas &canvas) const
 {
-  Pen dash_pen(Pen::DASH, 1, COLOR_DARK_GRAY);
+  Pen dash_pen(Pen::DASH, 1, color_theme->dark_gray);
   canvas.Select(dash_pen);
 
   const RasterPoint center = render_projection.GetScreenOrigin();

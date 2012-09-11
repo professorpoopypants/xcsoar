@@ -334,7 +334,7 @@ ChartRenderer::DrawBarChart(const LeastSquares &lsdata)
   if (unscaled_x || unscaled_y)
     return;
 
-  Brush green_brush(COLOR_GREEN);
+  Brush green_brush(look.color_theme->green);
   canvas.Select(green_brush);
   canvas.SelectNullPen();
 

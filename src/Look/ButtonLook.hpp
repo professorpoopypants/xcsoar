@@ -46,7 +46,8 @@ struct ButtonLook {
     Brush brush;
   } disabled;
 
-  void Initialise(const Font &_font);
+  void Initialise(const Font &_font,
+                  const ColorTheme &color_theme);
 };
 
 #endif

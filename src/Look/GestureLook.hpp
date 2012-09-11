@@ -32,7 +32,7 @@ struct GestureLook
   Color color, invalid_color;
   Pen pen, invalid_pen;
 
-  void Initialise();
+  void Initialise(const ColorTheme &color_theme);
 };
 
 #endif

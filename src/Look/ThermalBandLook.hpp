@@ -35,7 +35,8 @@ struct ThermalBandLook {
 
   Pen white_pen, black_pen;
 
-  void Initialise(bool inverse, Color sky_color);
+  void Initialise(bool inverse, Color sky_color,
+                  const ColorTheme &color_theme);
 };
 
 #endif

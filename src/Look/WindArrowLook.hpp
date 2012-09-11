@@ -32,7 +32,7 @@ struct WindArrowLook
   Pen arrow_pen, tail_pen;
   Brush arrow_brush;
 
-  void Initialise();
+  void Initialise(const ColorTheme &color_theme);
 };
 
 #endif

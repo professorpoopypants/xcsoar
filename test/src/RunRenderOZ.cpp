@@ -175,7 +175,7 @@ OZWindow::OnPaint(Canvas &canvas)
   roz.Draw(canvas, OZRenderer::LAYER_ACTIVE, projection, *oz, offset);
 
   /* debugging for ObservationZone::GetBoundary() */
-  Pen pen(1, COLOR_RED);
+  Pen pen(1, color_theme->red);
   canvas.Select(pen);
   const OZBoundary boundary = oz->GetBoundary();
   for (auto i = boundary.begin(), end = boundary.end(); i != end; ++i) {

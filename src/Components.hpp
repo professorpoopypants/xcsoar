@@ -45,6 +45,7 @@ class AltairControl;
 class Logger;
 class GlueFlightLogger;
 class TrackingGlue;
+class ColorTheme;
 
 // other global objects
 extern FileCache *file_cache;
@@ -56,6 +57,7 @@ extern ProtectedMarkers *protected_marks;
 extern TopographyStore *topography;
 extern RasterTerrain *terrain;
 extern RasterWeather RASP;
+extern ColorTheme* color_theme;
 extern GlideComputer *glide_computer;
 #ifndef ENABLE_OPENGL
 extern DrawThread *draw_thread;

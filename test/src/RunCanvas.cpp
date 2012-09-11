@@ -107,7 +107,7 @@ private:
     canvas.SelectHollowBrush();
     canvas.SelectBlackPen();
 
-    Brush red_brush(COLOR_RED);
+    Brush red_brush(color_theme->red);
 
     const PixelRect rc = GetClientRect();
     const UPixelScalar width = rc.right - rc.left;

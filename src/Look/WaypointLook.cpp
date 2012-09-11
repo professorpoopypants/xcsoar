@@ -27,7 +27,8 @@ Copyright_License {
 #include "Asset.hpp"
 
 void
-WaypointLook::Initialise(const WaypointRendererSettings &settings)
+WaypointLook::Initialise(const WaypointRendererSettings &settings,
+                         const ColorTheme &color_theme)
 {
   small_icon.Load(IDB_SMALL, IDB_SMALL_HD);
   turn_point_icon.Load(IDB_TURNPOINT, IDB_TURNPOINT_HD);
@@ -44,14 +45,14 @@ WaypointLook::Initialise(const WaypointRendererSettings &settings)
     reachable_brush.Set(COLOR_WHITE);
     terrain_unreachable_brush.Set(LightColor(COLOR_BLACK));
   } else {
-    reachable_brush.Set(COLOR_GREEN);
-    terrain_unreachable_brush.Set(LightColor(COLOR_RED));
+    reachable_brush.Set(color_theme.green);
+    terrain_unreachable_brush.Set(LightColor(color_theme.red));
   }
-  unreachable_brush.Set(COLOR_RED);
+  unreachable_brush.Set(color_theme.red);
   white_brush.Set(COLOR_WHITE);
-  light_gray_brush.Set(COLOR_LIGHT_GRAY);
-  magenta_brush.Set(COLOR_MAGENTA);
-  orange_brush.Set(COLOR_ORANGE);
+  light_gray_brush.Set(color_theme.light_gray);
+  magenta_brush.Set(color_theme.magenta);
+  orange_brush.Set(color_theme.orange);
 
   switch (settings.landable_style) {
   case WaypointRendererSettings::LandableStyle::PURPLE_CIRCLE:

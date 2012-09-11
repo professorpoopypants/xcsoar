@@ -40,6 +40,7 @@ Copyright_License {
 #include "Util/TrivialArray.hpp"
 #include "Interface.hpp"
 #include "Language/Language.hpp"
+#include "Components.hpp"
 
 #include "Compiler.h"
 
@@ -339,7 +340,7 @@ OnAirspaceListItemPaint(Canvas &canvas, const PixelRect paint_rc, unsigned i)
   rc_text_clip.right = left1 - Layout::FastScale(padding);
 
   if (!warning.ack_expired)
-    canvas.SetTextColor(COLOR_GRAY);
+    canvas.SetTextColor(color_theme->gray);
 
   { // name, altitude info
     _stprintf(buffer, _T("%-20s"), name.c_str());

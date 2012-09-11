@@ -24,10 +24,10 @@ Copyright_License {
 #include "TraceHistoryLook.hpp"
 
 void
-TraceHistoryLook::Initialise(bool _inverse)
+TraceHistoryLook::Initialise(bool _inverse, const ColorTheme &color_theme)
 {
   inverse = _inverse;
 
-  axis_pen.Set(1, COLOR_GRAY);
+  axis_pen.Set(1, color_theme.gray);
   line_pen.Set(2, inverse ? COLOR_WHITE : COLOR_BLACK);
 }

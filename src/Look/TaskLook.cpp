@@ -26,7 +26,7 @@ Copyright_License {
 #include "resource.h"
 
 void
-TaskLook::Initialise()
+TaskLook::Initialise(const ColorTheme &color_theme)
 {
   // Magenta ICAO color is 0x65,0x23,0x1c
   const Color task_color = Color(0x62,0x4e,0x90);
@@ -50,9 +50,9 @@ TaskLook::Initialise()
 
   target_icon.Load(IDB_TARGET, IDB_TARGET_HD);
 
-  hbGreen.Set(COLOR_GRAY);
-  hbGreen.Set(COLOR_GREEN);
-  hbOrange.Set(COLOR_ORANGE);
-  hbLightGray.Set(COLOR_LIGHT_GRAY);
-  hbNotReachableTerrain.Set(LightColor(COLOR_RED));
+  hbGreen.Set(color_theme.gray);
+  hbGreen.Set(color_theme.green);
+  hbOrange.Set(color_theme.orange);
+  hbLightGray.Set(color_theme.light_gray);
+  hbNotReachableTerrain.Set(LightColor(color_theme.red));
 }

@@ -69,7 +69,7 @@ RenderGlidePolar(Canvas &canvas, const PixelRect rc,
     return;
   }
 
-  Pen blue_pen(2, COLOR_BLUE);
+  Pen blue_pen(2, chart_look.color_theme->blue);
 
   chart.ScaleYFromValue(fixed_zero);
   chart.ScaleYFromValue(-glide_polar.GetSMax() * fixed(1.1));

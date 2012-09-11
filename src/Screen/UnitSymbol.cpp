@@ -24,6 +24,7 @@ Copyright_License {
 #include "Screen/UnitSymbol.hpp"
 #include "Screen/Canvas.hpp"
 #include "Screen/Layout.hpp"
+#include "Components.hpp"
 
 #include <assert.h>
 
@@ -41,7 +42,7 @@ UnitSymbol::Draw(Canvas &canvas, PixelScalar x, PixelScalar y, Kind kind) const
   if (kind & INVERSE)
     std::swap(text_color, bg_color);
   if (kind & GRAY)
-    text_color = COLOR_GRAY;
+    text_color = color_theme->gray;
 
   const PixelSize size = GetSize();
   const PixelSize screen_size = GetScreenSize();

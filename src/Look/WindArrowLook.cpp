@@ -25,9 +25,9 @@ Copyright_License {
 #include "Screen/Layout.hpp"
 
 void
-WindArrowLook::Initialise()
+WindArrowLook::Initialise(const ColorTheme &color_theme)
 {
-  arrow_pen.Set(Layout::Scale(1), DarkColor(COLOR_GRAY));
+  arrow_pen.Set(Layout::Scale(1), DarkColor(color_theme.gray));
   tail_pen.Set(Pen::DASH, 1, COLOR_BLACK);
-  arrow_brush.Set(COLOR_GRAY);
+  arrow_brush.Set(color_theme.gray);
 }

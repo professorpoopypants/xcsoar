@@ -117,7 +117,7 @@ OnAirspaceListEnter(unsigned index)
       return;
 
     ActionInterface::SendMapSettings();
-    look.Initialise(renderer);
+    look.Initialise(renderer, color_theme);
     airspace_list->Invalidate();
   } else {
     renderer.classes[index].display = !renderer.classes[index].display;

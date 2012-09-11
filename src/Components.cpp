@@ -52,6 +52,7 @@ Copyright_License {
 #include "Logger/GlueFlightLogger.hpp"
 #include "Waypoint/WaypointDetailsReader.hpp"
 #include "Screen/Fonts.hpp"
+#include "Screen/Color.hpp"
 #include "Blackboard/DeviceBlackboard.hpp"
 #include "MapWindow/GlueMapWindow.hpp"
 #include "Markers/Markers.hpp"
@@ -146,6 +147,8 @@ Airspaces airspace_database;
 GlideComputer *glide_computer;
 
 static GlideComputerEvents glide_computer_events;
+
+ColorTheme *color_theme;
 
 #ifdef GNAV
 AltairControl altair_control;
@@ -260,6 +263,8 @@ XCSoarInterface::Startup()
              OpenGL::frame_buffer_object);
 #endif
 
+  color_theme = new ColorTheme(HasColors());
+
   main_window->Initialise();
 
 #ifdef SIMULATOR_AVAILABLE
@@ -267,7 +272,7 @@ XCSoarInterface::Startup()
   if (!sim_set_in_cmd_line_flag) {
     DialogLook white_look;
     white_look.Initialise(Fonts::map_bold, Fonts::map, Fonts::map_label,
-                          Fonts::map_bold, Fonts::map_bold);
+                          Fonts::map_bold, Fonts::map_bold, *color_theme);
     white_look.SetBackgroundColor(COLOR_WHITE);
     SetXMLDialogLook(white_look);
 
@@ -611,6 +616,7 @@ XCSoarInterface::Shutdown()
 
   LogStartUp(_T("CloseTopography"));
   delete topography;
+  delete color_theme;
 
   delete protected_marks;
   delete marks;

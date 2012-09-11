@@ -38,7 +38,7 @@ struct HorizonLook {
   Brush terrain_brush;
   Pen terrain_pen;
 
-  void Initialise();
+  void Initialise(const ColorTheme &color_theme);
 };
 
 #endif

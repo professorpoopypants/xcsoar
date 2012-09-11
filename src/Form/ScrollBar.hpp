@@ -36,6 +36,7 @@ Copyright_License {
 
 class Window;
 class Canvas;
+class DialogLook;
 
 class ScrollBar {
 protected:
@@ -47,9 +48,14 @@ protected:
   /** Coordinates of the Slider */
   PixelRect rc_slider;
 
+  /**
+   * Dialog Look
+   */
+  const DialogLook &look;
+
 public:
   /** Constructor of the ScrollBar class */
-  ScrollBar();
+  ScrollBar(const DialogLook &look);
 
   /** Returns the width of the ScrollBar */
   PixelScalar GetWidth() const {

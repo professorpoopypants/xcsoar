@@ -51,6 +51,11 @@ struct DialogLook {
 
   Color background_color, text_color;
 
+  /**
+   * ColorTheme that can be used externally
+   */
+  const ColorTheme *color_theme;
+
   Brush background_brush;
 
   const Font *text_font, *small_font;
@@ -115,7 +120,8 @@ struct DialogLook {
   void Initialise(const Font &caption_font,
                   const Font &text_font, const Font &small_font,
                   const Font &button_font,
-                  const Font &list_font);
+                  const Font &list_font,
+                  const ColorTheme &color_theme);
 
   void SetBackgroundColor(Color color);
 };

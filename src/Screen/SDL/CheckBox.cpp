@@ -160,7 +160,7 @@ CheckBox::OnPaint(Canvas &canvas)
   if (IsEnabled())
     canvas.SelectBlackPen();
   else
-    canvas.Select(Pen(1, COLOR_GRAY));
+    canvas.Select(Pen(1, color_theme->gray));
 
   unsigned size = canvas.get_height() - 4;
   canvas.Rectangle(2, 2, size, size);
@@ -171,7 +171,7 @@ CheckBox::OnPaint(Canvas &canvas)
     if (IsEnabled())
       canvas.SelectBlackBrush();
     else
-      canvas.Select(Brush(COLOR_GRAY));
+      canvas.Select(Brush(color_theme->gray));
 
     RasterPoint check_mark[] = {
       {-8, -2},
@@ -193,7 +193,7 @@ CheckBox::OnPaint(Canvas &canvas)
 
   canvas.SetTextColor(IsEnabled()
                       ? (HasFocus() ? COLOR_WHITE : COLOR_BLACK)
-                      : COLOR_GRAY);
+                      : color_theme->gray);
   canvas.SetBackgroundTransparent();
   canvas.text(canvas.get_height() + 2, 2, text.c_str());
 }

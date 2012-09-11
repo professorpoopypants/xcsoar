@@ -30,23 +30,24 @@ Copyright_License {
 
 #define COLOR_INVERSE_RED Color(0xff, 0x70, 0x70)
 #define COLOR_INVERSE_BLUE Color(0x90, 0x90, 0xff)
-#define COLOR_INVERSE_YELLOW COLOR_YELLOW
-#define COLOR_INVERSE_GREEN COLOR_GREEN
-#define COLOR_INVERSE_MAGENTA COLOR_MAGENTA
+#define COLOR_INVERSE_YELLOW color_theme.yellow
+#define COLOR_INVERSE_GREEN color_theme.green
+#define COLOR_INVERSE_MAGENTA color_theme.magenta
 
 void
-InfoBoxLook::Initialise(bool _inverse, bool use_colors)
+InfoBoxLook::Initialise(bool _inverse, bool use_colors,
+                        const ColorTheme &color_theme)
 {
   inverse = _inverse;
 
   value.fg_color = title.fg_color = comment.fg_color =
     inverse ? COLOR_WHITE : COLOR_BLACK;
   background_color = inverse ? COLOR_BLACK : COLOR_WHITE;
-  focused_background_color = COLOR_XCSOAR_LIGHT;
+  focused_background_color = color_theme.xcsoar_light;
 
   Color border_color;
   if (IsNookSimpleTouch())
-    border_color = COLOR_GRAY;
+    border_color = color_theme.gray;
   else
     border_color = Color(128, 128, 128);
 
@@ -64,11 +65,11 @@ InfoBoxLook::Initialise(bool _inverse, bool use_colors)
 
   colors[0] = border_color;
   if (use_colors) {
-    colors[1] = inverse ? COLOR_INVERSE_RED : COLOR_RED;
-    colors[2] = inverse ? COLOR_INVERSE_BLUE : COLOR_BLUE;
-    colors[3] = inverse ? COLOR_INVERSE_GREEN : COLOR_GREEN;
-    colors[4] = inverse ? COLOR_INVERSE_YELLOW : COLOR_YELLOW;
-    colors[5] = inverse ? COLOR_INVERSE_MAGENTA : COLOR_MAGENTA;
+    colors[1] = inverse ? COLOR_INVERSE_RED : color_theme.red;
+    colors[2] = inverse ? COLOR_INVERSE_BLUE : color_theme.blue;
+    colors[3] = inverse ? COLOR_INVERSE_GREEN : color_theme.green;
+    colors[4] = inverse ? COLOR_INVERSE_YELLOW : color_theme.yellow;
+    colors[5] = inverse ? COLOR_INVERSE_MAGENTA : color_theme.magenta;
   } else
     std::fill(colors + 1, colors + 6, border_color);
 }

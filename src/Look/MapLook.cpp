@@ -27,15 +27,15 @@ Copyright_License {
 #include "resource.h"
 
 void
-MapLook::Initialise(const MapSettings &settings)
+MapLook::Initialise(const MapSettings &settings, const ColorTheme &color_theme)
 {
-  waypoint.Initialise(settings.waypoint);
-  airspace.Initialise(settings.airspace);
-  aircraft.Initialise();
-  task.Initialise();
+  waypoint.Initialise(settings.waypoint, color_theme);
+  airspace.Initialise(settings.airspace, color_theme);
+  aircraft.Initialise(color_theme);
+  task.Initialise(color_theme);
   marker.Initialise();
   trail.Initialise(settings.trail);
-  wind.Initialise();
+  wind.Initialise(color_theme);
 
 #ifdef HAVE_NOAA
   noaa.Initialise();
@@ -49,7 +49,7 @@ MapLook::Initialise(const MapSettings &settings)
   terrain_warning_icon.Load(IDB_TERRAINWARNING, IDB_TERRAINWARNING_HD);
 
   compass_brush.Set(Color(207, 207, 207));
-  compass_pen.Set(Layout::ScalePenWidth(1), COLOR_GRAY);
+  compass_pen.Set(Layout::ScalePenWidth(1), color_theme.gray);
 
   traffic_safe_icon.Load(IDB_TRAFFIC_SAFE, IDB_TRAFFIC_SAFE_HD, false);
   traffic_warning_icon.Load(IDB_TRAFFIC_WARNING, IDB_TRAFFIC_WARNING_HD, false);
@@ -59,11 +59,11 @@ MapLook::Initialise(const MapSettings &settings)
   reach_pen.Set(Pen::DASH, Layout::ScalePenWidth(1), clrSepia);
   reach_pen_thick.Set(Pen::DASH, Layout::ScalePenWidth(2), clrSepia);
 
-  track_line_pen.Set(3, COLOR_GRAY);
+  track_line_pen.Set(3, color_theme.gray);
 
-  contest_pens[0].Set(Layout::ScalePenWidth(1) + 2, COLOR_RED);
-  contest_pens[1].Set(Layout::ScalePenWidth(1) + 1, COLOR_ORANGE);
-  contest_pens[2].Set(Layout::ScalePenWidth(1), COLOR_BLUE);
+  contest_pens[0].Set(Layout::ScalePenWidth(1) + 2, color_theme.red);
+  contest_pens[1].Set(Layout::ScalePenWidth(1) + 1, color_theme.orange);
+  contest_pens[2].Set(Layout::ScalePenWidth(1), color_theme.blue);
 
   thermal_source_icon.Load(IDB_THERMALSOURCE, IDB_THERMALSOURCE_HD);
 

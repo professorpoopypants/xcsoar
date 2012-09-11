@@ -28,7 +28,8 @@ Copyright_License {
 
 void
 VarioLook::Initialise(bool _inverse, bool _colors,
-                      const Font &_text_font, const Font &_value_font)
+                      const Font &_text_font, const Font &_value_font,
+                      const ColorTheme &color_theme)
 {
   inverse = _inverse;
   colors = _colors;

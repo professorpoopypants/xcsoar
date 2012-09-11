@@ -149,8 +149,7 @@ MainWindow::Initialise()
 
   if (look == NULL)
     look = new Look();
-
-  look->Initialise();
+  look->Initialise(*color_theme);
 }
 
 void
@@ -184,7 +183,7 @@ MainWindow::InitialiseConfigured()
   }
 
   assert(look != NULL);
-  look->InitialiseConfigured(CommonInterface::GetUISettings());
+  look->InitialiseConfigured(CommonInterface::GetUISettings(), *color_theme);
 
   LogStartUp(_T("Create info boxes"));
   InfoBoxManager::Create(*this, ib_layout, look->info_box, look->units);

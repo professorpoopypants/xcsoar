@@ -24,7 +24,8 @@ Copyright_License {
 #include "TerminalLook.hpp"
 
 void
-TerminalLook::Initialise(const Font &_font)
+TerminalLook::Initialise(const Font &_font,
+                         const ColorTheme &color_theme)
 {
   background_color = COLOR_BLACK;
   text_color = COLOR_WHITE;

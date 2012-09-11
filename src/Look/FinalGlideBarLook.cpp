@@ -25,18 +25,18 @@ Copyright_License {
 #include "Screen/Layout.hpp"
 
 void
-FinalGlideBarLook::Initialise()
+FinalGlideBarLook::Initialise(const ColorTheme &color_theme)
 {
-  brush_below.Set(COLOR_RED);
-  brush_below_mc0.Set(LightColor(COLOR_RED));
-  pen_below.Set(Layout::ScalePenWidth(1), DarkColor(COLOR_RED));
+  brush_below.Set(color_theme.red);
+  brush_below_mc0.Set(LightColor(color_theme.red));
+  pen_below.Set(Layout::ScalePenWidth(1), DarkColor(color_theme.red));
 
-  brush_below_landable.Set(COLOR_ORANGE);
-  brush_below_landable_mc0.Set(LightColor(COLOR_ORANGE));
+  brush_below_landable.Set(color_theme.orange);
+  brush_below_landable_mc0.Set(LightColor(color_theme.orange));
   pen_below_landable.Set(Layout::ScalePenWidth(1),
-                         DarkColor(COLOR_ORANGE));
+                         DarkColor(color_theme.orange));
 
-  brush_above.Set(COLOR_GREEN);
-  brush_above_mc0.Set(LightColor(LightColor(COLOR_GREEN)));
-  pen_above.Set(Layout::ScalePenWidth(1), DarkColor(COLOR_GREEN));
+  brush_above.Set(color_theme.green);
+  brush_above_mc0.Set(LightColor(LightColor(color_theme.green)));
+  pen_above.Set(Layout::ScalePenWidth(1), DarkColor(color_theme.green));
 }

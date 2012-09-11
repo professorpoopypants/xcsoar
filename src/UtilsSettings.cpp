@@ -194,7 +194,8 @@ SettingsLeave(const UISettings &old_ui_settings)
     main_window.SetLook().map.trail.Initialise(settings_map.trail);
 
   if (settings_map.waypoint.landable_style != old_settings_map.waypoint.landable_style)
-    main_window.SetLook().map.waypoint.Initialise(settings_map.waypoint);
+    main_window.SetLook().map.waypoint.Initialise(settings_map.waypoint,
+                                                  *color_theme);
 
   ResumeAllThreads();
   main_window.ResumeThreads();

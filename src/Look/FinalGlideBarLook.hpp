@@ -40,7 +40,7 @@ struct FinalGlideBarLook {
   Brush brush_below_landable;
   Brush brush_below_landable_mc0;
 
-  void Initialise();
+  void Initialise(const ColorTheme &color_theme);
 };
 
 #endif

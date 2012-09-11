@@ -27,11 +27,11 @@ Copyright_License {
 #include "Asset.hpp"
 
 void
-TrafficLook::Initialise()
+TrafficLook::Initialise(const ColorTheme &color_theme)
 {
   if (IsNookSimpleTouch()) {
-    safe_color = COLOR_GRAY;
-    warning_color = COLOR_DARK_GRAY;
+    safe_color = color_theme.gray;
+    warning_color = color_theme.dark_gray;
     alarm_color = COLOR_BLACK;
   } else {
     safe_color = Color(0x1d,0x9b,0xc5);

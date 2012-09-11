@@ -26,13 +26,14 @@ Copyright_License {
 #include "Asset.hpp"
 
 void
-ThermalBandLook::Initialise(bool _inverse, Color sky_color)
+ThermalBandLook::Initialise(bool _inverse, Color sky_color,
+                            const ColorTheme &color_theme)
 {
   inverse = _inverse;
 
   if (IsNookSimpleTouch())  {
-    brush.Set(COLOR_GRAY);
-    pen.Set(Layout::ScalePenWidth(1), COLOR_DARK_GRAY);
+    brush.Set(color_theme.gray);
+    pen.Set(Layout::ScalePenWidth(1), color_theme.dark_gray);
   } else {
     brush.Set(sky_color);
     pen.Set(Layout::ScalePenWidth(1), DarkColor(sky_color));

@@ -33,7 +33,8 @@ struct TerminalLook {
 
   const Font *font;
 
-  void Initialise(const Font &font);
+  void Initialise(const Font &font,
+                  const ColorTheme &color_theme);
 };
 
 #endif

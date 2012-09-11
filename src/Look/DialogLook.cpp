@@ -34,43 +34,45 @@ DialogLook::Initialise(const Font &caption_font,
                        const Font &_text_font,
                        const Font &_small_font,
                        const Font &button_font,
-                       const Font &list_font)
+                       const Font &list_font,
+                       const ColorTheme &_color_theme)
 {
   caption.text_color = COLOR_BLACK;
   caption.font = &caption_font;
+  color_theme = &_color_theme;
 
 #ifdef EYE_CANDY
   caption.background_bitmap.Load(IDB_DIALOGTITLE);
 #else
-  caption.background_color = COLOR_XCSOAR_DARK;
-  caption.inactive_background_color = COLOR_GRAY;
+  caption.background_color = color_theme->xcsoar_dark;
+  caption.inactive_background_color = color_theme->gray;
 #endif
 
   if (IsNookSimpleTouch())
-    SetBackgroundColor(COLOR_LIGHT_GRAY);
+    SetBackgroundColor(color_theme->light_gray);
   else
     SetBackgroundColor(Color(0xe2, 0xdc, 0xbe));
   text_color = COLOR_BLACK;
 
   text_font = &_text_font;
   small_font = &_small_font;
-  button.Initialise(button_font);
+  button.Initialise(button_font, *color_theme);
 
   if (IsNookSimpleTouch())
-    focused.background_color = COLOR_DARK_GRAY;
+    focused.background_color = color_theme->dark_gray;
   else
-    focused.background_color = COLOR_XCSOAR_DARK;
+    focused.background_color = color_theme->xcsoar_dark;
 
   focused.text_color = COLOR_WHITE;
   focused.border_pen.Set(Layout::FastScale(1) + 2, COLOR_BLACK);
 
   list.background_color = COLOR_WHITE;
   list.text_color = COLOR_BLACK;
-  list.selected.background_color = COLOR_XCSOAR_LIGHT;
+  list.selected.background_color = color_theme->xcsoar_light;
   list.selected.text_color = COLOR_BLACK;
-  list.focused.background_color = COLOR_XCSOAR;
+  list.focused.background_color = color_theme->xcsoar;
   list.focused.text_color = COLOR_WHITE;
-  list.pressed.background_color = COLOR_YELLOW;
+  list.pressed.background_color = color_theme->yellow;
   list.pressed.text_color = COLOR_BLACK;
   list.font = &list_font;
 }

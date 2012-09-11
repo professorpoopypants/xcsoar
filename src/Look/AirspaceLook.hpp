@@ -40,8 +40,8 @@ struct AirspaceRendererSettings;
 
 struct AirspaceLook {
 
-  static const Color preset_colors_color[NUMAIRSPACECOLORSCOLOR];
-  static const Color preset_colors_gray[NUMAIRSPACECOLORSGRAY];
+  static Color preset_colors_color[NUMAIRSPACECOLORSCOLOR];
+  static Color preset_colors_gray[NUMAIRSPACECOLORSGRAY];
 
 
 #if defined(HAVE_ALPHA_BLEND) || !defined(HAVE_HATCHED_BRUSH)
@@ -62,7 +62,8 @@ struct AirspaceLook {
 
   MaskedIcon intercept_icon;
 
-  void Initialise(const AirspaceRendererSettings &settings);
+  void Initialise(const AirspaceRendererSettings &settings,
+                  const ColorTheme &color_theme);
   static const Color* GetPresetColors();
   static unsigned GetPresetColorsSize() { return HasColors() ?
       NUMAIRSPACECOLORSCOLOR : NUMAIRSPACECOLORSGRAY; }

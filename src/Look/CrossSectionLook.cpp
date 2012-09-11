@@ -24,7 +24,7 @@ Copyright_License {
 #include "CrossSectionLook.hpp"
 
 void
-CrossSectionLook::Initialise()
+CrossSectionLook::Initialise(const ColorTheme &color_theme)
 {
   background_color = COLOR_WHITE;
   text_color = COLOR_BLACK;

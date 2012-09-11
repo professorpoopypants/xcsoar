@@ -26,7 +26,7 @@
 #include "Screen/Fonts.hpp"
 
 void
-ThermalAssistantLook::Initialise(bool small)
+ThermalAssistantLook::Initialise(bool small, const ColorTheme &color_theme)
 {
   background_color = COLOR_WHITE;
   circle_color = Color(0xB0, 0xB0, 0xB0);

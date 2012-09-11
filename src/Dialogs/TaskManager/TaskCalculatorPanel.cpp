@@ -172,10 +172,10 @@ OnWarningPaint(gcc_unused WndOwnerDrawFrame *Sender, Canvas &canvas)
     const MaskedIcon *bmp = &look.intercept_icon;
     const int offsetx = bmp->GetSize().cx;
     const int offsety = canvas.get_height() - bmp->GetSize().cy;
-    canvas.Clear(COLOR_YELLOW);
+    canvas.Clear(color_theme->yellow);
     bmp->Draw(canvas, offsetx, offsety);
 
-    canvas.SetBackgroundColor(COLOR_YELLOW);
+    canvas.SetBackgroundColor(color_theme->yellow);
     canvas.SetTextColor(COLOR_BLACK);
     canvas.text(offsetx * 2 + Layout::Scale(2),
                 (int)(canvas.get_height() - textheight) / 2,

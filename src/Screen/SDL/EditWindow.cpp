@@ -100,8 +100,8 @@ EditWindow::OnPaint(Canvas &canvas)
       canvas.ClearWhite();
     canvas.SetTextColor(COLOR_BLACK);
   } else {
-    canvas.Clear(COLOR_LIGHT_GRAY);
-    canvas.SetTextColor(COLOR_DARK_GRAY);
+    canvas.Clear(color_theme->light_gray);
+    canvas.SetTextColor(color_theme->dark_gray);
   }
 
   PixelRect rc = {

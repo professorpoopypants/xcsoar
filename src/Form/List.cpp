@@ -46,6 +46,7 @@ ListControl::ListControl(ContainerWindow &parent, const DialogLook &_look,
                          PixelRect rc, const WindowStyle style,
                          UPixelScalar _item_height)
   :look(_look),
+   scroll_bar(_look),
    has_scroll_bar(true),
    item_height(_item_height),
    length(0),

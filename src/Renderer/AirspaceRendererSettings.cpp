@@ -22,6 +22,7 @@ Copyright_License {
 */
 
 #include "AirspaceRendererSettings.hpp"
+#include "Components.hpp"
 
 #include <algorithm>
 
@@ -32,8 +33,8 @@ AirspaceClassRendererSettings::SetDefaults()
 #ifdef HAVE_HATCHED_BRUSH
   brush = 0;
 #endif
-  border_color = COLOR_RED;
-  fill_color = COLOR_RED;
+  border_color = color_theme->red;
+  fill_color = color_theme->red;
   border_width = 2;
   fill_mode = FillMode::PADDING;
 }
@@ -70,13 +71,13 @@ AirspaceRendererSettings::SetDefaults()
   classes[CLASSF].brush = 3;
 #endif
 
-  classes[OTHER].SetColors(COLOR_CYAN);
-  classes[DANGER].SetColors(DarkColor(COLOR_MAGENTA));
-  classes[CLASSC].SetColors(DarkColor(COLOR_MAGENTA));
-  classes[CLASSD].SetColors(COLOR_BLUE);
-  classes[CTR].SetColors(DarkColor(COLOR_MAGENTA));
-  classes[WAVE].SetColors(DarkColor(COLOR_YELLOW));
-  classes[AATASK].SetColors(COLOR_YELLOW);
-  classes[CLASSE].SetColors(DarkColor(COLOR_GREEN));
-  classes[CLASSF].SetColors(DarkColor(COLOR_GREEN));
+  classes[OTHER].SetColors(color_theme->cyan);
+  classes[DANGER].SetColors(DarkColor(color_theme->magenta));
+  classes[CLASSC].SetColors(DarkColor(color_theme->magenta));
+  classes[CLASSD].SetColors(color_theme->blue);
+  classes[CTR].SetColors(DarkColor(color_theme->magenta));
+  classes[WAVE].SetColors(DarkColor(color_theme->yellow));
+  classes[AATASK].SetColors(color_theme->yellow);
+  classes[CLASSE].SetColors(DarkColor(color_theme->green));
+  classes[CLASSF].SetColors(DarkColor(color_theme->green));
 }

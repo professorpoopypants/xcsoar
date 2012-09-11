@@ -25,12 +25,12 @@ Copyright_License {
 #include "Screen/Layout.hpp"
 
 void
-AircraftLook::Initialise()
+AircraftLook::Initialise(const ColorTheme &color_theme)
 {
-  aircraft_pen.Set(1, COLOR_DARK_GRAY);
+  aircraft_pen.Set(1, color_theme.dark_gray);
   aircraft_simple1_pen.Set(Layout::ScalePenWidth(1), COLOR_BLACK);
   aircraft_simple2_pen.Set(Layout::ScalePenWidth(3), COLOR_WHITE);
 
-  canopy_pen.Set(1, DarkColor(COLOR_CYAN));
-  canopy_brush.Set(COLOR_CYAN);
+  canopy_pen.Set(1, DarkColor(color_theme.cyan));
+  canopy_brush.Set(color_theme.cyan);
 }

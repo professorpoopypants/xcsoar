@@ -42,7 +42,8 @@ struct WaypointLook {
 
   Brush white_brush, light_gray_brush, magenta_brush, orange_brush;
 
-  void Initialise(const WaypointRendererSettings &settings);
+  void Initialise(const WaypointRendererSettings &settings,
+                  const ColorTheme &color_theme);
 };
 
 #endif
