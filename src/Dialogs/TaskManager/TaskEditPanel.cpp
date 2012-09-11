@@ -137,10 +137,12 @@ TaskEditPanel::OnPaintItem(Canvas &canvas, const PixelRect rc,
   const Font &name_font = *wf.GetLook().list.font;
   const Font &small_font = *wf.GetLook().small_font;
 
+  canvas.SetTextColor(
+    wf.GetLook().list.GetTextColor(wTaskPoints->GetCursorIndex() == DrawListIndex,
+                                    wTaskPoints->HasFocus(), false));
   // Draw "Add turnpoint" label
   if (DrawListIndex == ordered_task->TaskSize()) {
     canvas.Select(name_font);
-    canvas.SetTextColor(COLOR_BLACK);
     _stprintf(buffer, _T("  (%s)"), _("Add Turnpoint"));
     canvas.text(rc.left + line_height + Layout::FastScale(2),
                 rc.top + line_height / 2 - name_font.GetHeight() / 2, buffer);
@@ -171,7 +173,6 @@ TaskEditPanel::OnPaintItem(Canvas &canvas, const PixelRect rc,
 
   // Use small font for details
   canvas.Select(small_font);
-  canvas.SetTextColor(COLOR_BLACK);
 
   UPixelScalar leg_info_width = 0;
   if (show_leg_info) {
