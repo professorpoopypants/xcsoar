@@ -47,7 +47,7 @@ public:
 
   gcc_malloc
   static TextUtil *create(const char *facename, int height,
-                          bool bold, bool italic);
+                          bool bold, bool italic, bool anti_alias);
 
   gcc_pure
   PixelSize getTextBounds(const char *text) const;

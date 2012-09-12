@@ -41,7 +41,7 @@ TextUtil::Initialise(JNIEnv *_env)
 
   cls.Find(env, "org/xcsoar/TextUtil");
 
-  midTextUtil = env->GetMethodID(cls, "<init>", "(Ljava/lang/String;II)V");
+  midTextUtil = env->GetMethodID(cls, "<init>", "(Ljava/lang/String;III)V");
   midGetFontMetrics = env->GetMethodID(cls, "getFontMetrics", "([I)V");
   midGetTextBounds = env->GetMethodID(cls, "getTextBounds",
                                       "(Ljava/lang/String;)[I");
@@ -75,10 +75,11 @@ TextUtil::TextUtil(jobject _obj)
 }
 
 TextUtil *
-TextUtil::create(const char *facename, int height, bool bold, bool italic)
+TextUtil::create(const char *facename, int height, bool bold, bool italic,
+                 bool anti_alias)
 {
   jobject localObject;
-  jint paramStyle, paramTextSize;
+  jint paramStyle, paramTextSize, paramAntiAlias;
 
   Java::String paramFamilyName(env, facename);
   paramStyle = 0;
@@ -87,11 +88,13 @@ TextUtil::create(const char *facename, int height, bool bold, bool italic)
   if (italic)
     paramStyle |= 2;
   paramTextSize = height;
+  paramAntiAlias = anti_alias;
 
   // construct org.xcsoar.TextUtil object
   localObject = env->NewObject(cls, midTextUtil,
                                paramFamilyName.Get(),
-                               paramStyle, paramTextSize);
+                               paramStyle, paramTextSize,
+                               paramAntiAlias);
   if (!localObject)
     return NULL;
 

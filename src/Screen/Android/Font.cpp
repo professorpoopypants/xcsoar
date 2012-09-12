@@ -45,9 +45,11 @@ bool
 Font::Set(const TCHAR *facename, UPixelScalar height, bool bold, bool italic)
 {
   assert(IsScreenInitialized());
+  bool anti_alias = color_theme->HasColor();
 
   delete text_util_object;
-  text_util_object = TextUtil::create(facename, height, bold, italic);
+  text_util_object = TextUtil::create(facename, height, bold, italic,
+                                      anti_alias);
   if (!text_util_object)
     return false;
 

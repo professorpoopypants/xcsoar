@@ -113,6 +113,7 @@ Color Desaturate(Color c);
 
 class ColorTheme {
 public:
+  const bool has_color;
   const Color xcsoar_light;
   const Color xcsoar;
   const Color xcsoar_dark;
@@ -128,13 +129,16 @@ public:
   const Color orange;
   const Color brown;
 
-  ColorTheme(bool has_color)
+  bool HasColor() { return has_color; }
+
+  ColorTheme(bool _has_color)
+    :has_color(_has_color),
 #ifdef TESTING
-    :xcsoar_light(COLOR_XCSOAR_LIGHT_TESTING),
+    xcsoar_light(COLOR_XCSOAR_LIGHT_TESTING),
     xcsoar(COLOR_XCSOAR_TESTING),
     xcsoar_dark(COLOR_XCSOAR_DARK_TESTING),
 #else
-    :xcsoar_light(has_color ? COLOR_XCSOAR_LIGHT : COLOR_XCSOAR_LIGHT_NOOK),
+    xcsoar_light(has_color ? COLOR_XCSOAR_LIGHT : COLOR_XCSOAR_LIGHT_NOOK),
     xcsoar(has_color ? COLOR_XCSOAR : COLOR_XCSOAR_NOOK),
     xcsoar_dark(has_color ? COLOR_XCSOAR_DARK : COLOR_XCSOAR_DARK_NOOK),
 #endif
