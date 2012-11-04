@@ -20,15 +20,15 @@
 }
 */
 
-package org.xcsoar.nohorizon;
+package org.xcsoarrd.nohorizon;
 
 import android.os.Bundle;
 
 /**
- * Wrapper class to move org.xcsoar.XCSoar forward to package
- * org.xcsoar.nohorizon.
+ * Wrapper class to move org.xcsoarrd.XCSoar forward to package
+ * org.xcsoarrd.nohorizon.
  */
-public class XCSoar extends org.xcsoar.XCSoar {
+public class XCSoar extends org.xcsoarrd.XCSoar {
   @Override protected void onCreate(Bundle savedInstanceState) {
     if (serviceClass == null)
       serviceClass = MyService.class;

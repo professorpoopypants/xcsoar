@@ -20,13 +20,13 @@
 }
 */
 
-package org.xcsoar.nohorizon;
+package org.xcsoarrd.nohorizon;
 
 /**
- * Wrapper class to move org.xcsoar.XCSoar forward to package
- * org.xcsoar.nohorizon.
+ * Wrapper class to move org.xcsoarrd.XCSoar forward to package
+ * org.xcsoarrd.nohorizon.
  */
-public class MyService extends org.xcsoar.MyService {
+public class MyService extends org.xcsoarrd.MyService {
   @Override public void onCreate() {
     if (mainActivityClass == null)
       mainActivityClass = XCSoar.class;

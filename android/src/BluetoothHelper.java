@@ -21,7 +21,7 @@ Copyright_License {
 }
 */
 
-package org.xcsoar;
+package org.xcsoarrd;
 
 import java.util.UUID;
 import java.util.Set;

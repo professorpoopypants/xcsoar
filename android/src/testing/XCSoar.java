@@ -20,15 +20,15 @@
 }
 */
 
-package org.xcsoar.testing;
+package org.xcsoarrd.testing;
 
 import android.os.Bundle;
 
 /**
- * Wrapper class to move org.xcsoar.XCSoar forward to package
- * org.xcsoar.testing.
+ * Wrapper class to move org.xcsoarrd.XCSoar forward to package
+ * org.xcsoarrd.testing.
  */
-public class XCSoar extends org.xcsoar.XCSoar {
+public class XCSoar extends org.xcsoarrd.XCSoar {
   @Override protected void onCreate(Bundle savedInstanceState) {
     if (serviceClass == null)
       serviceClass = MyService.class;

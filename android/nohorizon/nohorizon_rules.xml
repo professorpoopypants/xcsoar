@@ -2,11 +2,11 @@
 
 <project name="xcsoar_nohorizon_rules">
   <target name="-pre-compile">
-    <copy file="${gen.absolute.dir}/org/xcsoar/nohorizon/R.java"
-          toFile="${gen.absolute.dir}/org/xcsoar/R.java">
+    <copy file="${gen.absolute.dir}/org/xcsoarrd/nohorizon/R.java"
+          toFile="${gen.absolute.dir}/org/xcsoarrd/R.java">
       <filterset begintoken="package " endtoken=";">
-        <filter token="org.xcsoar.nohorizon"
-                value="package org.xcsoar;"/>
+        <filter token="org.xcsoarrd.nohorizon"
+                value="package org.xcsoarrd;"/>
       </filterset>
     </copy>
   </target>

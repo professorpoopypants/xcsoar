@@ -21,7 +21,7 @@ Copyright_License {
 }
 */
 
-package org.xcsoar;
+package org.xcsoarrd;
 
 import java.util.Collection;
 import java.util.LinkedList;

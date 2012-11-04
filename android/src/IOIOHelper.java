@@ -21,7 +21,7 @@
   }
 */
 
-package org.xcsoar;
+package org.xcsoarrd;
 
 import java.util.Timer;
 import java.util.TimerTask;
