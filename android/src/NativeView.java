@@ -393,7 +393,7 @@ class NativeView extends SurfaceView
    */
   private boolean loadResourceTexture(String name, int[] result) {
     /* find the resource */
-    int resourceId = resources.getIdentifier(name, "drawable", "org.xcsoar");
+    int resourceId = resources.getIdentifier(name, "drawable", "org.xcsoar.nohorizon");
     if (resourceId == 0) {
       resourceId = resources.getIdentifier(name, "drawable",
                                            "org.xcsoar.testing");

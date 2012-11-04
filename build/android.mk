@@ -114,7 +114,7 @@ PNG_FILES = $(DRAWABLE_DIR)/icon.png $(PNG1) $(PNG1b) $(PNG2) $(PNG3) $(PNG4) $(
 ifeq ($(TESTING),y)
 MANIFEST = android/testing/AndroidManifest.xml
 else
-MANIFEST = android/AndroidManifest.xml
+MANIFEST = android/nohorizon/AndroidManifest.xml
 endif
 
 # symlink some important files to $(ANDROID_BUILD) and let the Android
@@ -145,6 +145,9 @@ endif
 ifeq ($(TESTING),y)
 	$(Q)ln -s ../../../../../../android/src/testing $(@D)/src/org/xcsoar
 	$(Q)ln -s ../../../android/testing/testing_rules.xml $(@D)/
+else
+	$(Q)ln -s ../../../../../../android/src/nohorizon $(@D)/src/org/xcsoar
+	$(Q)ln -s ../../../android/nohorizon/nohorizon_rules.xml $(@D)/
 endif
 	@touch $@
 
