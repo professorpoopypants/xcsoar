@@ -31,6 +31,7 @@ Copyright_License {
 #include "Screen/SingleWindow.hpp"
 #include "Screen/Layout.hpp"
 
+
 gcc_const
 static WindowStyle
 GetDialogStyle()
@@ -42,9 +43,10 @@ GetDialogStyle()
 }
 
 WidgetDialog::WidgetDialog(const TCHAR *caption, const PixelRect &rc,
-                           Widget *_widget)
+                           Widget *_widget, UPixelScalar _header_height)
   :WndForm(UIGlobals::GetMainWindow(), UIGlobals::GetDialogLook(),
            rc, caption, GetDialogStyle()),
+   dialog_header(GetClientAreaWindow(), _header_height),
    buttons(GetClientAreaWindow(), UIGlobals::GetDialogLook()),
    widget(GetClientAreaWindow(), _widget),
    auto_size(false),
@@ -53,10 +55,12 @@ WidgetDialog::WidgetDialog(const TCHAR *caption, const PixelRect &rc,
   widget.Move(buttons.UpdateLayout());
 }
 
-WidgetDialog::WidgetDialog(const TCHAR *caption, Widget *_widget)
+WidgetDialog::WidgetDialog(const TCHAR *caption, Widget *_widget,
+                           UPixelScalar _header_height)
   :WndForm(UIGlobals::GetMainWindow(), UIGlobals::GetDialogLook(),
            UIGlobals::GetMainWindow().GetClientRect(),
            caption, GetDialogStyle()),
+   dialog_header(UIGlobals::GetMainWindow(), _header_height),
    buttons(GetClientAreaWindow(), UIGlobals::GetDialogLook()),
    widget(GetClientAreaWindow(), _widget),
    auto_size(true),
@@ -64,6 +68,11 @@ WidgetDialog::WidgetDialog(const TCHAR *caption, Widget *_widget)
 {
   widget.Move(buttons.UpdateLayout());
 }
+
+WidgetDialog::DialogHeader::DialogHeader(ContainerWindow &parent,
+                                         UPixelScalar _height)
+  :height(_height)
+{}
 
 void
 WidgetDialog::AutoSize()
@@ -82,6 +91,7 @@ WidgetDialog::AutoSize()
   const PixelScalar max_height_with_buttons =
     max_size.cy + Layout::GetMaximumControlHeight();
   if (/* need full dialog height even for minimum widget height? */
+      /*landscape */
       min_height_with_buttons >= parent_size.cy ||
       /* try to avoid putting buttons left on portrait screens; try to
          comply with maximum widget height only on landscape
@@ -99,11 +109,14 @@ WidgetDialog::AutoSize()
       rc.right -= remaining_size.cx - max_size.cx;
 
     Move(rc);
-    widget.Move(buttons.LeftLayout());
+    rc.top += dialog_header.GetHeight();
+    rc.bottom -= GetTitleHeight();
+    widget.Move(buttons.LeftLayout(rc));
     return;
   }
 
   /* see if buttons fit at the bottom */
+  /* portrait */
 
   PixelRect rc = parent_rc;
   if (max_size.cx < parent_size.cx)
@@ -116,7 +129,9 @@ WidgetDialog::AutoSize()
     rc.bottom -= remaining_size.cy - max_size.cy;
 
   Move(rc);
-  widget.Move(buttons.BottomLayout());
+  rc.top += dialog_header.GetHeight();
+  rc.bottom -= GetTitleHeight();
+  widget.Move(buttons.BottomLayout(rc));
 }
 
 int
@@ -145,6 +160,18 @@ void
 WidgetDialog::OnDestroy()
 {
   widget.Unprepare();
+}
+
+
+PixelRect
+WidgetDialog::GetHeaderRect()
+{
+  PixelRect rc;
+  rc.left = 0;
+  rc.right = GetWidth();
+  rc.top = GetTitleHeight();
+  rc.bottom = rc.top + dialog_header.GetHeight();
+  return rc;
 }
 
 void

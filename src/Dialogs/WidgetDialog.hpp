@@ -28,12 +28,47 @@ Copyright_License {
 #include "Form/Form.hpp"
 #include "Form/ButtonPanel.hpp"
 #include "Form/ManagedWidget.hpp"
+#include "Look/MapLook.hpp"
 
 #include <tchar.h>
 
 class Widget;
 
 class WidgetDialog : public WndForm {
+
+  /**
+   * A class that displays a header rectangle above the widget and buttons
+   * of the dialog.
+   * The height of the rectangle is set when the WidgetDialog is constructed
+   * Create a derived class with a OnPaint that draws this and calls
+   * WidgetDialog::OnPaint
+   */
+  class DialogHeader: public PaintWindow
+  {
+  public:
+    DialogHeader(ContainerWindow &parent,
+                 UPixelScalar _height);
+
+    /**
+     * returns height
+     */
+    UPixelScalar GetHeight() {
+      return height;
+    }
+
+  protected:
+    /**
+     * height of header
+     */
+    UPixelScalar height;
+
+    /**
+     * draws the the header
+     */
+  };
+
+  DialogHeader dialog_header;
+
   ButtonPanel buttons;
 
   ManagedWidget widget;
@@ -43,13 +78,15 @@ class WidgetDialog : public WndForm {
   bool changed;
 
 public:
-  WidgetDialog(const TCHAR *caption, const PixelRect &rc, Widget *widget);
+  WidgetDialog(const TCHAR *caption, const PixelRect &rc,
+               Widget *widget, UPixelScalar header_height = 0);
 
   /**
    * Create a dialog with an automatic size (by
    * Widget::GetMinimumSize() and Widget::GetMaximumSize()).
    */
-  WidgetDialog(const TCHAR *caption, Widget *widget);
+  WidgetDialog(const TCHAR *caption, Widget *widget,
+               UPixelScalar header_height = 0);
 
   bool GetChanged() const {
     return changed;
@@ -83,6 +120,12 @@ public:
   int ShowModal();
 
   virtual void OnAction(int id);
+
+  /**
+   * returns rectangle used by header area
+   * (above buttons and widget)
+   */
+  PixelRect GetHeaderRect();
 
 private:
   void AutoSize();
