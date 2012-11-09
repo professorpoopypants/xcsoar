@@ -29,6 +29,8 @@ Copyright_License {
 #include "Dialogs/Waypoint.hpp"
 #include "Dialogs/Traffic.hpp"
 #include "Look/DialogLook.hpp"
+#include "Look/Look.hpp"
+#include "UIGlobals.hpp"
 #include "Language/Language.hpp"
 #include "MapSettings.hpp"
 #include "MapWindow/MapItem.hpp"
@@ -69,6 +71,109 @@ HasDetails(const MapItem &item)
   return false;
 }
 
+/**
+ * returns true if item type is displayed in header above list
+ */
+static bool
+IsInHeader(const MapItem &item)
+{
+  switch (item.type) {
+  case MapItem::LOCATION:
+  case MapItem::ARRIVAL_ALTITUDE:
+  case MapItem::SELF:
+    return true;
+
+  case MapItem::MARKER:
+  case MapItem::THERMAL:
+  case MapItem::AIRSPACE:
+  case MapItem::WAYPOINT:
+  case MapItem::TASK_OZ:
+  case MapItem::TRAFFIC:
+#ifdef HAVE_NOAA
+  case MapItem::WEATHER:
+#endif
+    return false;
+  }
+
+  return false;
+}
+
+/**
+ * A class based on the WidgetDialog that draws map list items
+ * about the plane in the header, and map list items that exist
+ * on the map as separate entities as items in a list.
+ */
+class MapItemListDialog : public WidgetDialog
+{
+protected:
+  const MapItemList &header_list;
+  const Look &look;
+  const MapSettings &settings;
+
+public:
+  MapItemListDialog(const TCHAR *caption, Widget *widget,
+                    UPixelScalar header_height,
+                    const MapItemList &_header_list,
+                    const MapSettings &_settings)
+    :WidgetDialog(caption, widget, header_height),
+     header_list(_header_list),
+     look(UIGlobals::GetLook()),
+     settings(_settings)
+     {}
+
+  /**
+   * paints the header of the Dialog
+   */
+  virtual void OnPaint(Canvas &canvas)
+  {
+    WidgetDialog::OnPaint(canvas);
+
+    const DialogLook &dialog_look = look.dialog;
+    const TrafficLook &traffic_look = look.traffic;
+    const FinalGlideBarLook &final_glide_look = look.final_glide_bar;
+
+    /* header_caption is painted at the bottom of the header */
+    UPixelScalar header_caption_height = dialog_look.caption.font->GetHeight();
+    UPixelScalar item_height = dialog_look.list.font->GetHeight()
+      + Layout::Scale(6) + dialog_look.small_font->GetHeight();
+    assert(item_height > 0);
+
+    const PixelRect rc_header = GetHeaderRect();
+    PixelRect rc_footer_caption = rc_header;
+    rc_footer_caption.top = rc_footer_caption.bottom - header_caption_height;
+
+    Brush brush(COLOR_XCSOAR_DARK);
+    canvas.Select(brush);
+    canvas.SetTextColor(COLOR_WHITE);
+    canvas.Select(*dialog_look.caption.font);
+    canvas.Rectangle(rc_footer_caption.left, rc_footer_caption.top,
+                     rc_footer_caption.right, rc_footer_caption.bottom);
+    canvas.text(rc_footer_caption.left + Layout::FastScale(2),
+                rc_footer_caption.top, _("Nearby items:"));
+
+    PixelRect header_rect_inner = rc_header;
+    header_rect_inner.bottom -= header_caption_height;
+
+    canvas.SelectWhiteBrush();
+    canvas.Rectangle(header_rect_inner.left, header_rect_inner.top,
+                     header_rect_inner.right, header_rect_inner.bottom);
+
+    canvas.SetTextColor(COLOR_BLACK);
+    for (unsigned i = 0; i < header_list.size(); i++) {
+      MapItem& item = *header_list[i];
+      PixelRect rc = header_rect_inner;
+      rc.left += Layout::Scale(1);
+      rc.top += i * item_height;
+      rc.bottom = rc.top + item_height;
+      MapItemListRenderer::Draw(canvas, rc, item,
+                                dialog_look, look.map, traffic_look,
+                                final_glide_look, settings,
+                                &XCSoarInterface::Basic().flarm.traffic);
+    }
+
+  }
+};
+
 class MapItemListWidget : public ListWidget, private ActionListener {
   enum Buttons {
     SETTINGS,
@@ -106,6 +211,11 @@ public:
 protected:
   void UpdateButtons() {
     const unsigned current = GetCursorIndex();
+    if (list.size() == 0) {
+      details_button->SetEnabled(false);
+      goto_button->SetEnabled(false);
+      return;
+    }
     details_button->SetEnabled(HasDetails(*list[current]));
     goto_button->SetEnabled(CanGotoItem(current));
   }
@@ -130,6 +240,7 @@ public:
   }
 
   bool CanGotoItem(unsigned index) const {
+    assert(index < list.size());
     return protected_task_manager != NULL &&
       list[index]->type == MapItem::WAYPOINT;
   }
@@ -211,6 +322,28 @@ MapItemListWidget::OnAction(int id)
   }
 }
 
+/**
+ * Populates header_list with items the belong in the header
+ * Populates list_list with items that belong in the lists
+ *
+ * @param header_list. the list of all the Map Items
+ * @param header_list. an empty list
+ * @param list_list. an empty list
+ */
+static void
+SplitMapItemList(const MapItemList &full_list,
+                 MapItemList& header_list,
+                 MapItemList& list_list)
+{
+  for (unsigned i = 0; i < full_list.size(); i++) {
+    MapItem &item = *full_list[i];
+    if (IsInHeader(item))
+      header_list.append(&item);
+    else
+      list_list.append(&item);
+  }
+}
+
 static int
 ShowMapItemListDialog(SingleWindow &parent,
                       const MapItemList &list,
@@ -219,17 +352,33 @@ ShowMapItemListDialog(SingleWindow &parent,
                       const FinalGlideBarLook &final_glide_look,
                       const MapSettings &settings)
 {
-  MapItemListWidget widget(list, dialog_look, look,
+  MapItemList list_list;
+  MapItemList header_list;
+  list_list.clear();
+  header_list.clear();
+  SplitMapItemList(list, header_list, list_list);
+
+  UPixelScalar item_height = dialog_look.list.font->GetHeight()
+    + Layout::Scale(6) + dialog_look.small_font->GetHeight();
+  assert(item_height > 0);
+  UPixelScalar header_caption_height = dialog_look.caption.font->GetHeight();
+
+  MapItemListWidget widget(list_list, dialog_look, look,
                            traffic_look, final_glide_look,
                            settings);
-  WidgetDialog dialog(_("Map elements at this location"), &widget);
+  MapItemListDialog dialog(_("Point:"), &widget,
+                           item_height * header_list.size()
+                           + header_caption_height,
+                           header_list, settings);
+
   widget.CreateButtons(dialog);
 
   int result = dialog.ShowModal() == mrOK
-    ? (int)widget.GetCursorIndex()
+    ? (int)widget.GetCursorIndex() + header_list.size()
     : -1;
   dialog.StealWidget();
-
+  list_list.clear();
+  header_list.clear();
   return result;
 }
 
