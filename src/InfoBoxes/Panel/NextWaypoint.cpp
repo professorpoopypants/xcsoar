@@ -27,6 +27,7 @@ Copyright_License {
 #include "Look/DialogLook.hpp"
 #include "Look/MapLook.hpp"
 #include "Form/List.hpp"
+#include "Form/Frame.hpp"
 #include "Form/WindowWidget.hpp"
 #include "Screen/Layout.hpp"
 #include "Components.hpp"
@@ -111,6 +112,11 @@ protected:
    */
   void PrepareAbortOrGoto(ContainerWindow &parent, const PixelRect &rc);
 
+  /**
+   * Caption for InfoBox dialog
+   */
+  virtual void SetCaption();
+
 public:
   /* virtual methods from class Widget */
   virtual void Prepare(ContainerWindow &parent, const PixelRect &rc);
@@ -137,6 +143,22 @@ NextWaypointWidget::InitTask()
   const TaskBehaviour &tb = task_manager->GetTaskBehaviour();
   task = task_manager->Clone(tb);
   waypoint_index = task_manager->GetActiveTaskPointIndex();
+}
+
+void
+NextWaypointWidget::SetCaption()
+{
+  switch (GetTaskDialogState()) {
+  case TaskEmpty:
+    assert(false);
+    break;
+  case TaskAbortOrGoto:
+    header_text->SetText(_("Goto or abort mode"));
+    break;
+  case TaskOrderedValid:
+    header_text->SetText(_("Advance next turnpoint"));
+    break;
+  }
 }
 
 void
