@@ -22,6 +22,10 @@ ifeq ($(HAVE_CE),y)
 OS_SOURCES += $(OS_SRC_DIR)/MemInfo.cpp
 endif
 
+ifeq ($(HAVE_UINPUT),y)
+OS_SOURCES += $(OS_SRC_DIR)/UInput.cpp
+endif
+
 $(eval $(call link-library,libos,OS))
 
 ifeq ($(HAVE_POSIX),n)

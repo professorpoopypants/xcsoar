@@ -58,6 +58,7 @@ TARGET_IS_ANDROID := n
 TARGET_IS_PI := n
 TARGET_IS_KOBO := n
 HAVE_POSIX := n
+HAVE_UINPUT := n
 HAVE_WIN32 := y
 HAVE_MSVCRT := y
 
@@ -844,4 +845,9 @@ endif
 
 ifeq ($(TARGET),ANDROID)
   TARGET_EXEEXT :=
+endif
+
+# TODO - better way to search for uinput existence?
+ifneq (,$(wildcard /usr/include/linux/uinput.h))
+	HAVE_UINPUT=y
 endif
