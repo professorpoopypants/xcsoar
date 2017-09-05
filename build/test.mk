@@ -35,7 +35,10 @@ TESTSLOW = \
 	test_aat \
 	test_replay_olc
 
-HARNESS_PROGRAMS = $(TESTFAST) $(TESTSLOW)
+TESTUINPUT = \
+	test_uinput
+
+HARNESS_PROGRAMS = $(TESTFAST) $(TESTSLOW) $(TESTUINPUT)
 
 build-harness: $(call name-to-bin,$(HARNESS_PROGRAMS))
 
@@ -44,6 +47,9 @@ testslow: $(call name-to-bin,$(TESTSLOW))
 
 testfast: $(call name-to-bin,$(TESTFAST))
 	$(Q)perl $(TEST_SRC_DIR)/testall.pl $(addprefix $(TARGET_BIN_DIR)/,$(TESTFAST))
+
+testuinput: $(call name-to-bin,$(TESTUINPUT))
+	$(Q)perl $(TEST_SRC_DIR)/testall.pl $(addprefix $(TARGET_BIN_DIR)/,$(TESTUINPUT))
 
 TEST1_LDADD = $(HARNESS_LIBS) \
 	$(TASK_LIBS) \

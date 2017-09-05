@@ -1,5 +1,7 @@
 CXX_FEATURES = -fno-exceptions -fno-rtti
 CXX_FEATURES += -std=gnu++0x
+# error: ‘function’ in namespace ‘std’ does not name a template type
+#CXX_FEATURES += -std=c++11
 CXX_FEATURES += -fno-threadsafe-statics
 CXX_FEATURES += -fmerge-all-constants
 
