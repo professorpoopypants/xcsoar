@@ -6,7 +6,7 @@
 
 #include <unistd.h> // sleep
 
-#include "UInput.hpp"
+#include "OS/UInput.hpp"
 
 
 int main(int argc, char **argv)
