@@ -28,6 +28,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
+#include <functional>
 
 class WaypointPredicateCounter: public WaypointVisitor
 {
