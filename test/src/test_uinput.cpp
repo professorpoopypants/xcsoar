@@ -6,6 +6,8 @@
 
 #include <unistd.h> // sleep
 
+//#include "tap.h" // Get link failure, missing tap.o
+
 #include "OS/UInput.hpp"
 
 
@@ -13,7 +15,7 @@ int main(int argc, char **argv)
 {
     UInput uinput;
 
-    sleep(1); // wait for device to be registered by window manager / wayland
+    usleep(100000); // wait for device to be registered by window manager / wayland
     uinput.SendKey('h');
     uinput.SendKey('e');
     uinput.SendKey('l');
@@ -24,5 +26,6 @@ int main(int argc, char **argv)
     uinput.SendKey('3');
     uinput.SendKey('\r');
     uinput.SendKey('\n');
-    sleep(10);
+    usleep(100);
+    // ok(true, "uinput"); // see include tap.h comment
 }

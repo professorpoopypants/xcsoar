@@ -36,9 +36,10 @@ TESTSLOW = \
 	test_replay_olc
 
 TESTUINPUT = \
-	test_uinput
+	test_uinput \
+	TestFakekeyboard
 
-HARNESS_PROGRAMS = $(TESTFAST) $(TESTSLOW) $(TESTUINPUT)
+HARNESS_PROGRAMS = $(TESTFAST) $(TESTSLOW)
 
 build-harness: $(call name-to-bin,$(HARNESS_PROGRAMS))
 
@@ -128,7 +129,9 @@ TEST_NAMES = \
 	TestByteSizeFormatter \
 	TestTimeFormatter \
 	TestIGCFilenameFormatter \
-	TestLXNToIGC
+	TestLXNToIGC \
+	test_uinput \
+	test_FakeKeyboard
 
 TESTS = $(call name-to-bin,$(TEST_NAMES))
 
@@ -653,6 +656,29 @@ TEST_DRIVER_SOURCES = \
 	$(TEST_SRC_DIR)/TestDriver.cpp
 TEST_DRIVER_DEPENDS = DRIVER GEO MATH IO OS THREAD UTIL TIME
 $(eval $(call link-program,TestDriver,TEST_DRIVER))
+
+TEST_FAKEKEYBOARD_SOURCES = \
+	$(SRC)/Computer/ClimbAverageCalculator.cpp \
+	$(SRC)/FLARM/Traffic.cpp \
+	$(SRC)/FLARM/FlarmId.cpp \
+	$(SRC)/FLARM/FlarmCalculations.cpp \
+	$(SRC)/FLARM/List.cpp \
+	$(SRC)/NMEA/Info.cpp \
+	$(SRC)/NMEA/ExternalSettings.cpp \
+	$(SRC)/NMEA/SwitchState.cpp \
+	$(SRC)/NMEA/Attitude.cpp \
+	$(SRC)/NMEA/Acceleration.cpp \
+	$(SRC)/NMEA/InputLine.cpp \
+	$(SRC)/NMEA/Checksum.cpp \
+	$(SRC)/Device/Parser.cpp \
+	$(SRC)/Atmosphere/AirDensity.cpp \
+	$(SRC)/Units/Descriptor.cpp \
+	$(SRC)/Units/System.cpp \
+	$(TEST_SRC_DIR)/tap.c \
+	$(TEST_SRC_DIR)/FakeGeoid.cpp \
+	$(TEST_SRC_DIR)/FakeKeyboard.cpp
+TEST_FAKEKEYBOARD_DEPENDS = DRIVER GEO MATH IO OS THREAD UTIL TIME
+$(eval $(call link-program,TestFakekeyboard,TEST_FAKEKEYBOARD))
 
 TEST_WAY_POINT_FILE_SOURCES = \
 	$(SRC)/Units/Descriptor.cpp \
