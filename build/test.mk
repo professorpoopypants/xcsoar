@@ -670,6 +670,8 @@ TEST_FAKEKEYBOARD_SOURCES = \
 	$(SRC)/NMEA/Acceleration.cpp \
 	$(SRC)/NMEA/InputLine.cpp \
 	$(SRC)/NMEA/Checksum.cpp \
+	$(SRC)/Device/Port/NullPort.cpp \
+	$(SRC)/Device/Port/Port.cpp \
 	$(SRC)/Device/Parser.cpp \
 	$(SRC)/Atmosphere/AirDensity.cpp \
 	$(SRC)/Units/Descriptor.cpp \
