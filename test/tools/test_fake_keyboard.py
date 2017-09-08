@@ -15,7 +15,7 @@ def checksum(s):
 
 
 def make_msg(key):
-    m = f'$FAKBD,{key}'
+    m = f'$FAKBD,{hex(ord(key))}'
     cksum = checksum(m)
     m = f'{m}*{"%X" % cksum}'
     return m

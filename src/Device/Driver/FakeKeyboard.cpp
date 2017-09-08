@@ -46,7 +46,8 @@ FakeKeyboardDevice::FakeKeyboardDevice() : uinput()
 bool
 FakeKeyboardDevice::ParseFAKBD(NMEAInputLine &line, NMEAInfo &info)
 {
-    char key = line.ReadOneChar();
+    unsigned ascii = line.ReadHex(0);
+    char key = ascii & 0xff;
     uinput.SendKey(key);
 }
 
