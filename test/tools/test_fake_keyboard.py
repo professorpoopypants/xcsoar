@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -15,9 +15,9 @@ def checksum(s):
 
 
 def make_msg(key):
-    m = f'$FAKBD,{hex(ord(key))}'
+    m = '$FAKBD,{}'.format(hex(ord(key))[2:])
     cksum = checksum(m)
-    m = f'{m}*{"%X" % cksum}'
+    m = '{}*{}'.format(m, "%X" % cksum)
     return m
 
 def send(host, port, text):

@@ -350,17 +350,13 @@ UInput::UInput()
         }
     }
     
-    struct uinput_setup uisetup = {0};
-    uisetup.id.bustype = BUS_USB;
-    uisetup.id.vendor = 0x1234; // @todo - register something? use something reserved for unregistered devices
-    uisetup.id.product = 0x5678;
-    snprintf(uisetup.name, UINPUT_MAX_NAME_SIZE, "tophat-fakekeyboard");
-    if (ioctl(fd, UI_DEV_SETUP, &uisetup) < 0)
-    {
-        fd = -1;
-        // @todo log error & bail out here, don't just act as if everything is ok
-        return;
-    }
+    struct uinput_user_dev uidev = {0};
+    //uisetup.id.bustype = BUS_USB;
+    //uisetup.id.vendor = 0x1234; // @todo - register something? use something reserved for unregistered devices
+    //uisetup.id.product = 0x5678;
+    snprintf(uidev.name, UINPUT_MAX_NAME_SIZE, "tophat-fakekeyboard");
+    // UI_DEV_SETUP is too new for the TopHat default uinput.h headers/kernel?
+    write(fd, &uidev, sizeof(uidev));
     if (ioctl(fd, UI_DEV_CREATE) < 0)
     {
         fd = -1;
@@ -369,11 +365,12 @@ UInput::UInput()
     }
 }
 
+__u16 convert_char_to_code(__u16 c);
 
 // Returns 0 as an error value
 __u16 convert_char_to_code(__u16 c)
 {
-    if (c < 0 || c >= N_CHARS)
+    if (c >= N_CHARS)
         // @todo log warning
         return 0;
     if (c >= N_CHARS)
