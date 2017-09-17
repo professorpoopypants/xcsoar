@@ -32,7 +32,6 @@ def make_key_msg(key):
 
 
 def make_time_msg():
-    # must initialize time or else tophat ignores all GPS messages
     return make_gps_msg('GPRMC', '091717,A,5103.5403,N,00741.5742,E,055.3,022.4,230610,000.3,W')
 
 
@@ -40,7 +39,7 @@ def send(host, port, text):
     s = socket()
     s.connect((host, port))
     f = s.makefile(mode='w')
-    f.write(make_time_msg() + '\n')
+    #f.write(make_time_msg() + '\n')
     sleep(0.5)
     for k in text:
         f.write(make_key_msg(k) + '\n')
