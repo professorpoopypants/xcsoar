@@ -14,18 +14,34 @@ def checksum(s):
     return ret
 
 
+
 def make_msg(key):
     m = '$FAKBD,{}'.format(hex(ord(key))[2:])
+
+
+def make_gps_msg(header, body):
+    m = '${},{}'.format(header, body)
     cksum = checksum(m)
     m = '{}*{}'.format(m, "%X" % cksum)
     return m
+
+
+def make_key_msg(key):
+    return make_gps_msg('FAKBD', hex(ord(key))[2:])
+
+
+def make_time_msg():
+    # must initialize time or else tophat ignores all GPS messages
+    return make_gps_msg('GPRMC', '091717,A,5103.5403,N,00741.5742,E,055.3,022.4,230610,000.3,W')
+
 
 def send(host, port, text):
     s = socket()
     s.connect((host, port))
     f = s.makefile(mode='w')
+    f.write(make_time_msg() + '\n')
     for k in text:
-        f.write(make_msg(k) + '\n')
+        f.write(make_key_msg(k) + '\n')
         f.flush()
 
 
