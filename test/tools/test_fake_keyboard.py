@@ -2,6 +2,7 @@
 
 import os
 import sys
+from time import sleep
 from socket import socket
 
 
@@ -40,6 +41,7 @@ def send(host, port, text):
     s.connect((host, port))
     f = s.makefile(mode='w')
     f.write(make_time_msg() + '\n')
+    sleep(0.5)
     for k in text:
         f.write(make_key_msg(k) + '\n')
         f.flush()
