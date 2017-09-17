@@ -67,6 +67,7 @@ Copyright_License {
 static const struct DeviceRegister *const driver_list[] = {
   // IMPORTANT: ADD NEW ONES TO BOTTOM OF THIS LIST
   &generic_driver, // MUST BE FIRST
+  &fakekeyboard_driver,
   &cai302_driver,
   &ew_driver,
   &altair_pro_driver,
@@ -100,7 +101,6 @@ static const struct DeviceRegister *const driver_list[] = {
   /* disabled due to http://bugs.xcsoar.org/ticket/3585 and
      http://bugs.xcsoar.org/ticket/3586 - scheduled for deletion */
   &atr833_driver,
-  &fakekeyboard_driver,
   nullptr
 };
 

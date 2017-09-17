@@ -21,6 +21,8 @@ Copyright_License {
 }
 */
 
+#include <cstdio>
+
 #include "NMEA/Checksum.hpp"
 #include "NMEA/Info.hpp"
 #include "NMEA/InputLine.hpp"
@@ -72,6 +74,7 @@ FakeKeyboardDevice::ParseNMEA(const char *String, NMEAInfo &info)
 static Device *
 FakeKeyboardCreateOnPort(const DeviceConfig &config, Port &com_port)
 {
+  printf("Hello from FakeKeyboardDevice\n");
   return new FakeKeyboardDevice();
 }
 
